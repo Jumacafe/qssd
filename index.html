@@ -1,8 +1,6 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<html lang="es"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Lectura diaria</title>
   <style>
     :root{
@@ -388,6 +386,225 @@
     .kbd{
       font-size:11px; padding:3px 7px; border-radius:6px; border:1px solid var(--line); color:var(--muted);
     }
+
+    .searchRow{
+      display:grid;
+      gap:10px;
+      margin-bottom:12px;
+    }
+    .searchInput{
+      width:100%;
+      min-height:var(--tap);
+      border:1px solid var(--line);
+      background:var(--card);
+      color:var(--text);
+      border-radius:16px;
+      padding:0 14px;
+      outline:none;
+    }
+    .searchInput:focus{
+      border-color:color-mix(in srgb, var(--accent) 60%, var(--line));
+      box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+    }
+    .chartCard{
+      display:grid;
+      gap:12px;
+    }
+    .chartHead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .chartTitle{
+      font-size:16px;
+      font-weight:800;
+      letter-spacing:-.02em;
+      margin:0;
+    }
+    .chartSub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+    .chartBars{
+      display:grid;
+      gap:10px;
+      align-items:end;
+      min-height:170px;
+    }
+    .chartBars.week{
+      grid-template-columns:repeat(7,1fr);
+    }
+    .chartBars.month{
+      grid-template-columns:repeat(4,1fr);
+    }
+    .chartBar{
+      display:grid;
+      gap:8px;
+      justify-items:center;
+      align-items:end;
+    }
+    .chartBarTrack{
+      width:100%;
+      height:132px;
+      display:flex;
+      align-items:flex-end;
+    }
+    .chartBarFill{
+      width:100%;
+      min-height:8px;
+      border-radius:14px 14px 4px 4px;
+      background:linear-gradient(180deg,var(--accent),var(--accent2));
+    }
+    .chartBarLabel{
+      font-size:11px;
+      color:var(--muted);
+      text-align:center;
+    }
+    .chartBarValue{
+      font-size:12px;
+      font-weight:800;
+      text-align:center;
+    }
+    .metricGrid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+    .metric{
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:16px;
+      padding:12px;
+      display:grid;
+      gap:4px;
+      min-height:88px;
+    }
+    .metric .name{font-size:12px;color:var(--muted);font-weight:700}
+    .metric .num{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .metric .meta{font-size:12px;color:var(--muted)}
+    .chartSvg{
+      width:100%;
+      height:180px;
+      display:block;
+    }
+    .chartAreaPath{
+      fill:color-mix(in srgb, var(--accent) 12%, transparent);
+      stroke:none;
+    }
+    .chartLinePath{
+      fill:none;
+      stroke:var(--accent);
+      stroke-width:2.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .chartPoint{
+      fill:var(--card);
+      stroke:var(--accent);
+      stroke-width:2;
+    }
+    .chartAxisLabels{
+      display:grid;
+      grid-template-columns:repeat(14,1fr);
+      gap:4px;
+      font-size:10px;
+      color:var(--muted);
+      margin-top:-2px;
+    }
+    .chartAxisLabels span{
+      text-align:center;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .chartLineLegend{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .chartLineLegend div{
+      display:grid;
+      gap:2px;
+      text-align:center;
+    }
+    .chartLineLegend strong{
+      color:var(--text);
+      font-size:13px;
+    }
+    .pieWrap{
+      position:relative;
+      width:180px;
+      height:180px;
+      margin:0 auto;
+    }
+    .pieSvg{
+      width:100%;
+      height:100%;
+      display:block;
+      transform:rotate(0deg);
+    }
+    .pieCenter{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      pointer-events:none;
+    }
+    .pieValue{
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+    .pieLabel{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:-6px;
+    }
+    .pieLegend{
+      display:grid;
+      gap:8px;
+    }
+    .pieLegend div{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:14px;
+      background:color-mix(in srgb, var(--line) 16%, var(--card));
+      border:1px solid var(--line);
+      font-size:13px;
+    }
+    .pieLegend strong{
+      font-size:13px;
+    }
+    .pieSwatch{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      flex:0 0 10px;
+    }
+    .noteTitleInput{
+      width:100%;
+      border:1px solid var(--line);
+      background:var(--card);
+      color:var(--text);
+      border-radius:14px;
+      padding:12px 14px;
+      outline:none;
+      min-height:var(--tap);
+      font-weight:700;
+    }
+    .noteTitleInput:focus{
+      border-color:color-mix(in srgb, var(--accent) 60%, var(--line));
+      box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+    }
+
     @media (min-width:720px){
       .split{grid-template-columns:1.1fr .9fr}
       .hero{grid-template-columns:repeat(4,1fr)}
@@ -400,7 +617,7 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
   <div class="app" id="app" data-theme="light">
     <header class="top">
       <div class="titleRow">
@@ -416,27 +633,27 @@
     </header>
 
     <main>
-      <section class="section active" id="homeSection">
+      <section class="section" id="homeSection">
         <div class="grid">
           <div class="hero">
             <div class="card stat">
               <div class="label">Racha actual</div>
-              <div class="value" id="streakCurrent">0</div>
-              <div class="hint" id="streakHint">Empezá hoy para construir una racha.</div>
+              <div class="value" id="streakCurrent">1</div>
+              <div class="hint" id="streakHint">¡Buen trabajo, seguí así!</div>
             </div>
             <div class="card stat">
               <div class="label">Mejor racha</div>
-              <div class="value" id="streakBest">0</div>
+              <div class="value" id="streakBest">4</div>
               <div class="hint">Días seguidos leyendo.</div>
             </div>
             <div class="card stat">
               <div class="label">Páginas hoy</div>
-              <div class="value" id="pagesToday">0</div>
+              <div class="value" id="pagesToday">13</div>
               <div class="hint" id="goalText">Meta diaria: 10 páginas</div>
             </div>
             <div class="card stat">
               <div class="label">Libros</div>
-              <div class="value" id="booksTotal">0</div>
+              <div class="value" id="booksTotal">1</div>
               <div class="hint" id="booksHint">En progreso y terminados.</div>
             </div>
           </div>
@@ -445,11 +662,11 @@
             <div class="row">
               <div>
                 <div class="sectionTitle" style="margin:0">Objetivo de hoy</div>
-                <div class="mini" id="goalProgressText">0 / 10 páginas</div>
+                <div class="mini" id="goalProgressText">13 / 10 páginas</div>
               </div>
               <button class="btn small secondary" id="editGoalBtn">Editar meta</button>
             </div>
-            <div class="goalBar"><div id="goalFill"></div></div>
+            <div class="goalBar"><div id="goalFill" style="width: 100%;"></div></div>
             <div class="inlineActions">
               <button class="btn small" id="quickLogBtn">Registrar lectura</button>
               <button class="btn small secondary" id="addBookShortcut">Agregar libro</button>
@@ -466,7 +683,28 @@
                 <button class="btn small secondary" id="goBooksBtn">Ver todos</button>
               </div>
               <div class="divider"></div>
-              <div class="list" id="activeBooksList"></div>
+              <div class="list" id="activeBooksList">
+      <div class="bookListItem">
+        <div class="listTop">
+          <div>
+            <h3>La psicología del dinero</h3>
+            <div class="bookMeta">morgan housel · 300 páginas</div>
+          </div>
+          <span class="chip muted">Leyendo</span>
+        </div>
+        <div class="progressWrap">
+          <div class="row">
+            <div class="mini">113 leídas</div>
+            <div class="mini">38%</div>
+          </div>
+          <div class="progressBar"><div style="width:37.666666666666664%"></div></div>
+        </div>
+        <div class="bookQuickActions">
+          <button class="btn small" onclick="window.__app.openBook('dyn0fgirmnphvl4w')">Abrir</button>
+          <button class="btn small secondary" onclick="window.__app.logForBook('dyn0fgirmnphvl4w')">+ Registrar</button>
+        </div>
+      </div>
+    </div>
               <div class="empty" id="noActiveBooks" style="display:none">
                 No hay libros activos todavía. Agregá tu primero para empezar.
               </div>
@@ -475,20 +713,21 @@
             <div class="card">
               <div class="row">
                 <div>
-                  <div class="sectionTitle">Últimas lecturas</div>
-                  <div class="mini">Lo que registraste recientemente.</div>
+                  <div class="sectionTitle">Datos interesantes</div>
+                  <div class="mini">Información útil sobre tu lectura y tus libros.</div>
                 </div>
               </div>
               <div class="divider"></div>
-              <div class="list" id="recentLogsList"></div>
-              <div class="empty" id="noLogs" style="display:none">
-                Todavía no registraste lecturas. Agregá tu primera entrada.
+              <div class="list" id="insightsList"><div class="logItem">Tenés 113 páginas leídas registradas en total.</div><div class="logItem">Tu promedio por día activo es de 14.1 páginas.</div><div class="logItem">Tu día más lector fue 08 abr. 2026 con 25 páginas.</div><div class="logItem">Tu libro más avanzado es "La psicología del dinero".</div><div class="logItem">La última lectura registrada fue el 08 may. 2026.</div><div class="logItem">9 apuntes creados en 1 libros.</div><div class="logItem">38% completado · 113 páginas leídas.</div><div class="logItem">A este ritmo, te quedarían aprox. 14 días para terminarlo.</div></div>
+              <div class="empty" id="noInsights" style="display:none">
+                Empezá a leer y a registrar para ver datos interesantes acá.
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      
       <section class="section" id="booksSection">
         <div class="row" style="margin-bottom:12px">
           <div>
@@ -502,39 +741,256 @@
           <button class="tab" data-filter="reading">Leyendo</button>
           <button class="tab" data-filter="done">Terminados</button>
         </div>
-        <div class="list" id="booksList"></div>
+        <div class="searchRow">
+          <input class="searchInput" id="bookSearchInput" type="search" placeholder="Buscar por título o autor">
+        </div>
+        <div class="list" id="booksList">
+      <div class="bookListItem">
+        <div class="listTop">
+          <div>
+            <h3>La psicología del dinero</h3>
+            <div class="bookMeta">morgan housel · Inicio: 08 abr. 2026</div>
+          </div>
+          <span class="chip ">Leyendo</span>
+        </div>
+        <div class="progressWrap">
+          <div class="row">
+            <div class="mini">113 / 300 páginas</div>
+            <div class="mini">38%</div>
+          </div>
+          <div class="progressBar"><div style="width:37.666666666666664%"></div></div>
+        </div>
+        <div class="mini">Promedio: 14.1 pág/día · Días leyendo: 8 · Duración: 31 días · Apuntes: 9</div>
+        <div class="bookQuickActions">
+          <button class="btn small" onclick="window.__app.openBook('dyn0fgirmnphvl4w')">Ver detalles</button>
+          <button class="btn small secondary" onclick="window.__app.logForBook('dyn0fgirmnphvl4w')">Registrar páginas</button>
+          <button class="btn small secondary" onclick="window.__app.toggleBookDone('dyn0fgirmnphvl4w')">Marcar terminado</button>
+        </div>
+      </div>
+    </div>
         <div class="empty" id="noBooks" style="display:none">
           No hay libros guardados. Creá tu primer libro para empezar.
         </div>
       </section>
 
-      <section class="section" id="statsSection">
+      <section class="section active" id="statsSection">
         <div class="grid">
           <div class="card">
-            <div class="sectionTitle">Estadísticas globales</div>
-            <div class="smallGrid" id="globalStats"></div>
+            <div class="sectionTitle">Resumen general</div>
+            <div class="metricGrid" id="globalStats">
+      <div class="metric">
+        <div class="name">Páginas totales</div>
+        <div class="num">113</div>
+        <div class="meta">Todas tus lecturas registradas</div>
+      </div>
+    
+      <div class="metric">
+        <div class="name">Libros totales</div>
+        <div class="num">1</div>
+        <div class="meta">0 terminados · 1 en progreso</div>
+      </div>
+    
+      <div class="metric">
+        <div class="name">Días activos</div>
+        <div class="num">8</div>
+        <div class="meta">Días distintos con al menos una lectura</div>
+      </div>
+    
+      <div class="metric">
+        <div class="name">Promedio diario</div>
+        <div class="num">14.1</div>
+        <div class="meta">Promedio sobre días activos</div>
+      </div>
+    
+      <div class="metric">
+        <div class="name">Notas creadas</div>
+        <div class="num">9</div>
+        <div class="meta">1 libros con apuntes</div>
+      </div>
+    
+      <div class="metric">
+        <div class="name">Racha actual</div>
+        <div class="num">1</div>
+        <div class="meta">Mejor racha: 4 días</div>
+      </div>
+    </div>
           </div>
-          <div class="card">
-            <div class="sectionTitle">Actividad reciente</div>
-            <div class="mini">Últimos 30 días.</div>
-            <div class="divider"></div>
-            <div id="activitySummary" class="list"></div>
+
+          <div class="card chartCard">
+            <div class="chartHead">
+              <div>
+                <div class="chartTitle">Páginas leídas en 7 días</div>
+                <div class="chartSub">Actividad diaria reciente, con foco en constancia.</div>
+              </div>
+              <div class="chip muted" id="weekTotalChip">13 pág.</div>
+            </div>
+            <div id="weeklyChart" class="chartBars week">
+        <div class="chartBar" title="sáb 02 · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
           </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">sáb</div>
+        </div>
+      
+        <div class="chartBar" title="dom 03 · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
+          </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">dom</div>
+        </div>
+      
+        <div class="chartBar" title="lun 04 · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
+          </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">lun</div>
+        </div>
+      
+        <div class="chartBar" title="mar 05 · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
+          </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">mar</div>
+        </div>
+      
+        <div class="chartBar" title="mié 06 · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
+          </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">mié</div>
+        </div>
+      
+        <div class="chartBar" title="jue 07 · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
+          </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">jue</div>
+        </div>
+      
+        <div class="chartBar" title="vie 08 · 13 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:100%"></div>
+          </div>
+          <div class="chartBarValue">13</div>
+          <div class="chartBarLabel">vie</div>
+        </div>
+      </div>
+          </div>
+
+          <div class="card chartCard">
+            <div class="chartHead">
+              <div>
+                <div class="chartTitle">Tendencia de 4 semanas</div>
+                <div class="chartSub">Sumatoria de páginas por semana.</div>
+              </div>
+              <div class="chip muted" id="monthTotalChip">69 pág.</div>
+            </div>
+            <div id="monthlyChart" class="chartBars month">
+        <div class="chartBar" title="11-abr. - 17-abr. · 56 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:100%"></div>
+          </div>
+          <div class="chartBarValue">56</div>
+          <div class="chartBarLabel">S1</div>
+        </div>
+      
+        <div class="chartBar" title="18-abr. - 24-abr. · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
+          </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">S2</div>
+        </div>
+      
+        <div class="chartBar" title="25-abr. - 01-may. · 0 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:8%"></div>
+          </div>
+          <div class="chartBarValue">0</div>
+          <div class="chartBarLabel">S3</div>
+        </div>
+      
+        <div class="chartBar" title="02-may. - 08-may. · 13 páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:23.214285714285715%"></div>
+          </div>
+          <div class="chartBarValue">13</div>
+          <div class="chartBarLabel">S4</div>
+        </div>
+      </div>
+          </div>
+
+          <div class="card chartCard">
+            <div class="chartHead">
+              <div>
+                <div class="chartTitle">Línea de lectura</div>
+                <div class="chartSub">Páginas por día en las últimas 2 semanas.</div>
+              </div>
+              <div class="chip muted" id="lineTotalChip">13 pág.</div>
+            </div>
+            <div id="dailyLineChart">
+      <svg viewBox="0 0 100 180" class="chartSvg" preserveAspectRatio="none" aria-label="Gráfico de líneas">
+        <path d="M 0 168 L 0.0,168.0 L 7.7,168.0 L 15.4,168.0 L 23.1,168.0 L 30.8,168.0 L 38.5,168.0 L 46.2,168.0 L 53.8,168.0 L 61.5,168.0 L 69.2,168.0 L 76.9,168.0 L 84.6,168.0 L 92.3,168.0 L 100.0,12.0 L 100 168" class="chartAreaPath"></path>
+        <polyline points="0.0,168.0 7.7,168.0 15.4,168.0 23.1,168.0 30.8,168.0 38.5,168.0 46.2,168.0 53.8,168.0 61.5,168.0 69.2,168.0 76.9,168.0 84.6,168.0 92.3,168.0 100.0,12.0" class="chartLinePath"></polyline>
+        <circle cx="0.0" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="7.7" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="15.4" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="23.1" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="30.8" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="38.5" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="46.2" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="53.8" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="61.5" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="69.2" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="76.9" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="84.6" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="92.3" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="100.0" cy="12.0" r="2.8" class="chartPoint"></circle>
+      </svg>
+      <div class="chartAxisLabels">
+        <span>25-abr.</span><span>26-abr.</span><span>27-abr.</span><span>28-abr.</span><span>29-abr.</span><span>30-abr.</span><span>01-may.</span><span>02-may.</span><span>03-may.</span><span>04-may.</span><span>05-may.</span><span>06-may.</span><span>07-may.</span><span>08-may.</span>
+      </div>
+      <div class="chartLineLegend">
+        <div><strong>0</strong><span>25-abr.</span></div><div><strong>0</strong><span>26-abr.</span></div><div><strong>0</strong><span>27-abr.</span></div><div><strong>0</strong><span>28-abr.</span></div><div><strong>0</strong><span>29-abr.</span></div><div><strong>0</strong><span>30-abr.</span></div><div><strong>0</strong><span>01-may.</span></div><div><strong>0</strong><span>02-may.</span></div><div><strong>0</strong><span>03-may.</span></div><div><strong>0</strong><span>04-may.</span></div><div><strong>0</strong><span>05-may.</span></div><div><strong>0</strong><span>06-may.</span></div><div><strong>0</strong><span>07-may.</span></div><div><strong>13</strong><span>08-may.</span></div>
+      </div>
+    </div>
+          </div>
+
+          <div class="card chartCard">
+            <div class="chartHead">
+              <div>
+                <div class="chartTitle">Libros por estado</div>
+                <div class="chartSub">Vista circular de tu biblioteca.</div>
+              </div>
+              <div class="chip muted" id="pieTotalChip">1 libros</div>
+            </div>
+            <div id="booksPieChart">
+      <div class="pieWrap">
+        <svg viewBox="0 0 100 100" class="pieSvg" aria-label="Gráfico circular">
+          <circle r="42" cx="50" cy="50" fill="transparent" style="stroke:color-mix(in srgb, var(--line) 60%, transparent)" stroke-width="16"></circle>
+          
+        <circle r="42" cx="50" cy="50" fill="transparent" style="stroke:var(--accent)" stroke-width="16" stroke-dasharray="263.89378290154264 0" stroke-dashoffset="0" transform="rotate(-90 50 50)"></circle>
+        <circle r="42" cx="50" cy="50" fill="transparent" style="stroke:var(--accent2)" stroke-width="16" stroke-dasharray="0 263.89378290154264" stroke-dashoffset="-263.89378290154264" transform="rotate(-90 50 50)"></circle>
+        </svg>
+        <div class="pieCenter">
+          <div class="pieValue">1</div>
+          <div class="pieLabel">libros</div>
+        </div>
+      </div>
+      <div class="pieLegend">
+        <div><span class="pieSwatch" style="background:var(--accent)"></span><span>Leyendo</span><strong>1</strong></div><div><span class="pieSwatch" style="background:var(--accent2)"></span><span>Terminados</span><strong>0</strong></div>
+      </div>
+    </div>
+          </div>
+
           <div class="card">
             <div class="sectionTitle">Sugerencias útiles</div>
-            <div class="list" id="tipsList"></div>
+            <div class="list" id="tipsList"><div class="logItem">Tu libro más avanzado es "La psicología del dinero" con 38%.</div></div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="settingsSection">
+<section class="section" id="settingsSection">
         <div class="grid">
           <div class="card">
             <div class="sectionTitle">Configuración</div>
             <div class="formGrid">
               <div class="field">
                 <label>Meta diaria de páginas</label>
-                <input class="input" id="dailyGoalInput" type="number" min="1" step="1" />
+                <input class="input" id="dailyGoalInput" type="number" min="1" step="1">
               </div>
               <div class="field">
                 <label>Tema</label>
@@ -548,6 +1004,15 @@
                 <select class="select" id="reminderSelect">
                   <option value="on">Activado</option>
                   <option value="off">Desactivado</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Orden de apuntes</label>
+                <select class="select" id="noteSortSelectSettings">
+                  <option value="created-desc">Más nuevos primero</option>
+                  <option value="created-asc">Más viejos primero</option>
+                  <option value="title-asc">A-Z</option>
+                  <option value="title-desc">Z-A</option>
                 </select>
               </div>
             </div>
@@ -565,7 +1030,7 @@
               <button class="btn secondary" id="importBtn">Importar JSON</button>
               <button class="btn secondary" id="exportBtn2">Exportar JSON</button>
             </div>
-            <input type="file" id="importFile" accept="application/json" hidden />
+            <input type="file" id="importFile" accept="application/json" hidden="">
           </div>
         </div>
       </section>
@@ -574,9 +1039,9 @@
 
   <nav class="bottomNav">
     <div class="navBar">
-      <button class="navBtn active" data-section="homeSection"><span>🏠</span>Inicio</button>
+      <button class="navBtn" data-section="homeSection"><span>🏠</span>Inicio</button>
       <button class="navBtn" data-section="booksSection"><span>📚</span>Libros</button>
-      <button class="navBtn" data-section="statsSection"><span>📈</span>Stats</button>
+      <button class="navBtn active" data-section="statsSection"><span>📈</span>Stats</button>
       <button class="navBtn" data-section="settingsSection"><span>⚙️</span>Ajustes</button>
     </div>
   </nav>
@@ -584,14 +1049,14 @@
   <div class="modalBack" id="modalBack" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modalHeader">
-        <h2 id="modalTitle">Título</h2>
+        <h2 id="modalTitle">Libro: La psicología del dinero</h2>
         <button class="close" id="closeModal">✕</button>
       </div>
       <div id="modalBody"></div>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast">Apunte guardado.</div>
 
 <script>
 (() => {
@@ -620,6 +1085,7 @@
 
   let data = load();
   let currentFilter = "all";
+  let booksSearchQuery = "";
   let selectedBookId = null;
 
   function load(){
@@ -684,6 +1150,85 @@
   function logsByBook(bookId){
     return data.logs.filter(l => l.bookId === bookId).slice().sort((a,b) => a.date.localeCompare(b.date));
   }
+
+  function dailyTotals(days = 14){
+    const out = [];
+    const base = new Date();
+    for(let i = days - 1; i >= 0; i--){
+      const d = new Date(base);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0,10);
+      const value = data.logs.filter(l => l.date === key).reduce((a,b) => a + Number(b.pages || 0), 0);
+      out.push({
+        key,
+        label: d.toLocaleDateString("es-UY", { month:"short", day:"2-digit" }),
+        value
+      });
+    }
+    return out;
+  }
+
+  function sortedNotes(notes){
+    const mode = data.settings.noteSort || "created-desc";
+    return [...(notes || [])].sort((a, b) => {
+      const aTitle = String(a.title || "").toLowerCase();
+      const bTitle = String(b.title || "").toLowerCase();
+      const aTime = new Date(a.createdAt || 0).getTime();
+      const bTime = new Date(b.createdAt || 0).getTime();
+      switch(mode){
+        case "created-asc": return aTime - bTime;
+        case "title-asc": return aTitle.localeCompare(bTitle, "es");
+        case "title-desc": return bTitle.localeCompare(aTitle, "es");
+        case "created-desc":
+        default: return bTime - aTime;
+      }
+    });
+  }
+
+  function bookInterestingFacts(book){
+    const stats = calcBookStats(book);
+    const logs = logsByBook(book.id);
+    const firstLog = logs[0];
+    const lastLog = logs.at(-1);
+    const biggestSession = logs.reduce((best, cur) => {
+      if(!best || Number(cur.pages || 0) > Number(best.pages || 0)) return cur;
+      return best;
+    }, null);
+    const avgSession = stats.readDays ? stats.totalRead / stats.readDays : 0;
+    return [
+      `${Math.round(stats.progress)}% completado · ${stats.totalRead} páginas leídas.`,
+      stats.estDaysLeft ? `A este ritmo, te quedarían aprox. ${stats.estDaysLeft} días para terminarlo.` : "Ya superaste la meta de avance de este libro o no hay suficiente lectura para estimarla.",
+      biggestSession ? `Tu sesión más larga en este libro fue de ${biggestSession.pages} páginas.` : "Todavía no registraste sesiones en este libro.",
+      firstLog ? `Empezaste a registrar este libro el ${fmtDate(firstLog.date)}.` : "Aún no hay registros para este libro.",
+      lastLog ? `La última lectura registrada fue el ${fmtDate(lastLog.date)}.` : "No hay última lectura registrada aún.",
+      `Promedio por sesión en este libro: ${avgSession ? avgSession.toFixed(1) : "0.0"} páginas.`
+    ];
+  }
+
+  function generalInterestingFacts(){
+    const g = calcGlobalStats();
+    const logs = logsSortedDesc();
+    const biggestDay = (() => {
+      const map = new Map();
+      for(const log of data.logs){
+        map.set(log.date, (map.get(log.date) || 0) + Number(log.pages || 0));
+      }
+      let winner = null;
+      for(const [date, pages] of map.entries()){
+        if(!winner || pages > winner.pages) winner = { date, pages };
+      }
+      return winner;
+    })();
+    const topBook = g.topBook ? getBook(g.topBook.id) : null;
+    return [
+      `Tenés ${g.totalPages} páginas leídas registradas en total.`,
+      `Tu promedio por día activo es de ${g.avgDaily.toFixed(1)} páginas.`,
+      biggestDay ? `Tu día más lector fue ${fmtDate(biggestDay.date)} con ${biggestDay.pages} páginas.` : "Todavía no hay un día destacado.",
+      topBook ? `Tu libro más avanzado es "${topBook.title}".` : "Aún no hay libros suficientes para destacar uno.",
+      logs.at(0) ? `La última lectura registrada fue el ${fmtDate(logs.at(0).date)}.` : "Todavía no registraste lecturas.",
+      `${g.notesTotal} apuntes creados en ${g.booksWithNotes} libros.`
+    ];
+  }
   function calcBookStats(book){
     const logs = logsByBook(book.id);
     const totalRead = logs.reduce((a,b)=>a + Number(b.pages || 0), 0);
@@ -698,15 +1243,157 @@
     const estDaysLeft = (book.totalPages && avgPerDay && totalRead < book.totalPages) ? Math.ceil((book.totalPages - totalRead) / avgPerDay) : 0;
     return { totalRead, start, finish, durationDays, readDays, avgPerDay, avgPerCalendarDay, progress, estDaysLeft, last };
   }
+
   function calcGlobalStats(){
     const books = data.books;
-    const totalPages = data.logs.reduce((a,b)=>a + Number(b.pages || 0), 0);
+    const totalPages = data.logs.reduce((a,b) => a + Number(b.pages || 0), 0);
     const readDays = uniqueLogDates().length;
     const avgDaily = readDays ? totalPages / readDays : 0;
     const completed = books.filter(b => b.status === "done").length;
     const inProgress = books.filter(b => b.status !== "done").length;
-    return { totalPages, readDays, avgDaily, completed, inProgress, totalBooks: books.length };
+    const notesTotal = books.reduce((acc, book) => acc + (Array.isArray(book.notes) ? book.notes.length : 0), 0);
+    const booksWithNotes = books.filter(b => Array.isArray(b.notes) && b.notes.length).length;
+    let topBook = null;
+    for(const book of books){
+      const stats = calcBookStats(book);
+      if(!topBook || stats.progress > topBook.progress){
+        topBook = { id: book.id, title: book.title, progress: stats.progress };
+      }
+    }
+    return { totalPages, readDays, avgDaily, completed, inProgress, totalBooks: books.length, notesTotal, booksWithNotes, topBook };
   }
+
+  function renderBarChart(container, series){
+    if(!container) return;
+    const max = Math.max(1, ...series.map(s => Number(s.value || 0)));
+    container.innerHTML = series.map(item => {
+      const value = Number(item.value || 0);
+      const height = value > 0 ? Math.max(8, (value / max) * 100) : 8;
+      return `
+        <div class="chartBar" title="${escapeHTML(item.label)} · ${value} páginas">
+          <div class="chartBarTrack">
+            <div class="chartBarFill" style="height:${height}%"></div>
+          </div>
+          <div class="chartBarValue">${value}</div>
+          <div class="chartBarLabel">${escapeHTML(item.short || item.label)}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderLineChart(container, series){
+    if(!container) return;
+    const width = 100;
+    const height = 180;
+    const max = Math.max(1, ...series.map(s => Number(s.value || 0)));
+    const step = series.length > 1 ? width / (series.length - 1) : width;
+    const points = series.map((item, i) => {
+      const x = i * step;
+      const y = height - ((Number(item.value || 0) / max) * (height - 24) + 12);
+      return { ...item, x, y };
+    });
+    const polyline = points.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+    container.innerHTML = `
+      <svg viewBox="0 0 ${width} ${height}" class="chartSvg" preserveAspectRatio="none" aria-label="Gráfico de líneas">
+        <path d="M 0 ${height-12} L ${polyline.replaceAll(" ", " L ")} L ${width} ${height-12}" class="chartAreaPath"></path>
+        <polyline points="${polyline}" class="chartLinePath"></polyline>
+        ${points.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2.8" class="chartPoint"></circle>`).join("")}
+      </svg>
+      <div class="chartAxisLabels">
+        ${points.map(p => `<span>${escapeHTML(p.label)}</span>`).join("")}
+      </div>
+      <div class="chartLineLegend">
+        ${points.map(p => `<div><strong>${p.value}</strong><span>${escapeHTML(p.label)}</span></div>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderPieChart(container, slices){
+    if(!container) return;
+    const total = slices.reduce((a,b) => a + Math.max(0, Number(b.value || 0)), 0);
+    const radius = 42;
+    const circumference = 2 * Math.PI * radius;
+    let offset = 0;
+    const safeTotal = total || 1;
+    const colors = ["var(--accent)", "var(--accent2)", "var(--warn)", "var(--danger)"];
+    const circles = slices.map((slice, i) => {
+      const value = Math.max(0, Number(slice.value || 0));
+      const dash = (value / safeTotal) * circumference;
+      const c = colors[i % colors.length];
+      const out = `
+        <circle
+          r="${radius}" cx="50" cy="50"
+          fill="transparent"
+          style="stroke:${c}"
+          stroke-width="16"
+          stroke-dasharray="${dash} ${circumference - dash}"
+          stroke-dashoffset="${-offset}"
+          transform="rotate(-90 50 50)"
+        ></circle>`;
+      offset += dash;
+      return out;
+    }).join("");
+    container.innerHTML = `
+      <div class="pieWrap">
+        <svg viewBox="0 0 100 100" class="pieSvg" aria-label="Gráfico circular">
+          <circle r="${radius}" cx="50" cy="50" fill="transparent" style="stroke:color-mix(in srgb, var(--line) 60%, transparent)" stroke-width="16"></circle>
+          ${circles}
+        </svg>
+        <div class="pieCenter">
+          <div class="pieValue">${total}</div>
+          <div class="pieLabel">libros</div>
+        </div>
+      </div>
+      <div class="pieLegend">
+        ${slices.map((slice, i) => `<div><span class="pieSwatch" style="background:${colors[i % colors.length]}"></span><span>${escapeHTML(slice.label)}</span><strong>${slice.value}</strong></div>`).join("")}
+      </div>
+    `;
+  }
+
+  function lastNDaysPages(days){
+    const out = [];
+    const base = new Date();
+    for(let i = days - 1; i >= 0; i--){
+      const d = new Date(base);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0,10);
+      const value = data.logs.filter(l => l.date === key).reduce((a,b) => a + Number(b.pages || 0), 0);
+      out.push({
+        key,
+        label: d.toLocaleDateString("es-UY", { weekday:"short", day:"2-digit" }),
+        short: d.toLocaleDateString("es-UY", { weekday:"narrow" }),
+        value
+      });
+    }
+    return out;
+  }
+
+  function lastNWeeksPages(weeks){
+    const out = [];
+    const base = new Date();
+    for(let i = weeks - 1; i >= 0; i--){
+      const start = new Date(base);
+      start.setDate(start.getDate() - ((i + 1) * 7) + 1);
+      const end = new Date(base);
+      end.setDate(end.getDate() - (i * 7));
+      const startKey = start.toISOString().slice(0,10);
+      const endKey = end.toISOString().slice(0,10);
+      let value = 0;
+      for(const log of data.logs){
+        if(log.date >= startKey && log.date <= endKey){
+          value += Number(log.pages || 0);
+        }
+      }
+      out.push({
+        label: `${start.toLocaleDateString("es-UY", { day:"2-digit", month:"short" })} - ${end.toLocaleDateString("es-UY", { day:"2-digit", month:"short" })}`,
+        short: `S${weeks - i}`,
+        value
+      });
+    }
+    return out;
+  }
+
+
   function calcStreak(){
     const dates = uniqueLogDates();
     if(!dates.length) return { current:0, best:0, last:null };
@@ -768,25 +1455,14 @@
       activeEl.innerHTML = activeBooks.slice(0,4).map(bookCardHTML).join("");
     }
 
-    const recent = logsSortedDesc().slice(0,6);
-    const recentEl = $("#recentLogsList");
-    if(!recent.length){
-      recentEl.innerHTML = "";
-      $("#noLogs").style.display = "block";
+    const insights = [...generalInterestingFacts(), ...data.books.slice(0,3).flatMap(book => bookInterestingFacts(book).slice(0,2))].slice(0,8);
+    const insightsEl = $("#insightsList");
+    if(!insights.length){
+      insightsEl.innerHTML = "";
+      $("#noInsights").style.display = "block";
     } else {
-      $("#noLogs").style.display = "none";
-      recentEl.innerHTML = recent.map(log => {
-        const book = getBook(log.bookId);
-        return `
-          <div class="logItem">
-            <div class="row">
-              <strong>${escapeHTML(book?.title || "Libro eliminado")}</strong>
-              <span class="chip">${log.pages} pág.</span>
-            </div>
-            <div class="mini">${fmtDate(log.date)} · ${log.note ? escapeHTML(log.note) : "Lectura registrada"}</div>
-          </div>
-        `;
-      }).join("");
+      $("#noInsights").style.display = "none";
+      insightsEl.innerHTML = insights.map(item => `<div class="logItem">${escapeHTML(item)}</div>`).join("");
     }
   }
 
@@ -817,16 +1493,25 @@
     `;
   }
 
+
   function renderBooks(){
+    const query = booksSearchQuery.trim().toLowerCase();
     const books = data.books.filter(b => {
-      if(currentFilter === "reading") return b.status !== "done";
-      if(currentFilter === "done") return b.status === "done";
+      if(currentFilter === "reading" && b.status === "done") return false;
+      if(currentFilter === "done" && b.status !== "done") return false;
+      if(query){
+        const haystack = `${b.title || ""} ${b.author || ""}`.toLowerCase();
+        if(!haystack.includes(query)) return false;
+      }
       return true;
     });
     $("#noBooks").style.display = data.books.length ? "none" : "block";
-    $("#booksList").innerHTML = books.map(bookItemHTML).join("") || "";
+    $("#booksList").innerHTML = books.map(bookItemHTML).join("") || `<div class="empty">No se encontraron libros con ese filtro.</div>`;
     $$(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === currentFilter));
+    const search = $("#bookSearchInput");
+    if(search && search.value !== booksSearchQuery) search.value = booksSearchQuery;
   }
+
 
   function bookItemHTML(book){
     const s = calcBookStats(book);
@@ -846,7 +1531,7 @@
           </div>
           <div class="progressBar"><div style="width:${s.progress}%"></div></div>
         </div>
-        <div class="mini">Promedio: ${s.avgPerDay ? s.avgPerDay.toFixed(1) : "0.0"} pág/día · Días leyendo: ${s.readDays} · Duración: ${s.durationDays} días</div>
+        <div class="mini">Promedio: ${s.avgPerDay ? s.avgPerDay.toFixed(1) : "0.0"} pág/día · Días leyendo: ${s.readDays} · Duración: ${s.durationDays} días · Apuntes: ${(book.notes || []).length}</div>
         <div class="bookQuickActions">
           <button class="btn small" onclick="window.__app.openBook('${book.id}')">Ver detalles</button>
           <button class="btn small secondary" onclick="window.__app.logForBook('${book.id}')">Registrar páginas</button>
@@ -856,44 +1541,63 @@
     `;
   }
 
+
   function renderStats(){
     const g = calcGlobalStats();
     const streak = calcStreak();
+    const totalLast7 = lastNDaysPages(7).reduce((a,b) => a + b.value, 0);
+    const totalLast28 = lastNWeeksPages(4).reduce((a,b) => a + b.value, 0);
+    const totalLast14 = dailyTotals(14).reduce((a,b) => a + b.value, 0);
+
     const cards = [
-      ["Páginas totales", g.totalPages],
-      ["Libros totales", g.totalBooks],
-      ["Terminados", g.completed],
-      ["En progreso", g.inProgress],
-      ["Días activos", g.readDays],
-      ["Prom. por día", g.avgDaily.toFixed(1)]
+      { label: "Páginas totales", value: g.totalPages, meta: "Todas tus lecturas registradas" },
+      { label: "Libros totales", value: g.totalBooks, meta: `${g.completed} terminados · ${g.inProgress} en progreso` },
+      { label: "Días activos", value: g.readDays, meta: "Días distintos con al menos una lectura" },
+      { label: "Promedio diario", value: g.avgDaily.toFixed(1), meta: "Promedio sobre días activos" },
+      { label: "Notas creadas", value: g.notesTotal, meta: `${g.booksWithNotes} libros con apuntes` },
+      { label: "Racha actual", value: streak.current, meta: `Mejor racha: ${streak.best} días` }
     ];
-    $("#globalStats").innerHTML = cards.map(([label,val]) => `
-      <div class="statLine">
-        <div class="mini">${label}</div>
-        <div style="font-size:20px;font-weight:800;letter-spacing:-.03em">${val}</div>
+    $("#globalStats").innerHTML = cards.map(card => `
+      <div class="metric">
+        <div class="name">${escapeHTML(card.label)}</div>
+        <div class="num">${escapeHTML(card.value)}</div>
+        <div class="meta">${escapeHTML(card.meta)}</div>
       </div>
     `).join("");
 
-    const last30 = [];
-    const base = new Date();
-    for(let i=29;i>=0;i--){
-      const d = new Date(base);
-      d.setDate(d.getDate() - i);
-      const key = d.toISOString().slice(0,10);
-      const pages = data.logs.filter(l => l.date === key).reduce((a,b) => a + Number(b.pages||0), 0);
-      last30.push({key,pages});
-    }
-    $("#activitySummary").innerHTML = last30.slice(-10).reverse().map(item => `
-      <div class="logItem">
-        <div class="row"><strong>${fmtDate(item.key)}</strong><span class="chip">${item.pages} pág.</span></div>
-      </div>
-    `).join("") || `<div class="empty">No hay actividad reciente.</div>`;
+    renderBarChart(
+      $("#weeklyChart"),
+      lastNDaysPages(7).map((item) => ({
+        label: item.label,
+        short: item.label.slice(0,3),
+        value: item.value
+      }))
+    );
+    renderBarChart(
+      $("#monthlyChart"),
+      lastNWeeksPages(4).map((item) => ({
+        label: item.label,
+        short: item.short,
+        value: item.value
+      }))
+    );
+    renderLineChart($("#dailyLineChart"), dailyTotals(14));
+    renderPieChart($("#booksPieChart"), [
+      { label: "Leyendo", value: data.books.filter(b => b.status !== "done").length },
+      { label: "Terminados", value: data.books.filter(b => b.status === "done").length }
+    ]);
+
+    $("#weekTotalChip").textContent = `${totalLast7} pág.`;
+    $("#monthTotalChip").textContent = `${totalLast28} pág.`;
+    $("#lineTotalChip").textContent = `${totalLast14} pág.`;
+    $("#pieTotalChip").textContent = `${data.books.length} libros`;
 
     const tips = [];
     if(streak.current === 0) tips.push("Leé aunque sea 5 minutos para arrancar la racha.");
     if(g.avgDaily < (data.settings.dailyGoal || 10)) tips.push("Tu promedio está por debajo de la meta: hacé sesiones pequeñas y constantes.");
     if(data.books.length === 0) tips.push("Creá un libro para ver estadísticas automáticas.");
-    if(data.books.some(b => !b.notes || !b.notes.length)) tips.push("Usá apuntes para resumir capítulos y guardar opiniones.");
+    if(data.books.some(b => !b.notes || !b.notes.length)) tips.push("Usá apuntes con título para encontrar ideas rápido.");
+    if(g.topBook && g.topBook.progress > 0) tips.push(`Tu libro más avanzado es "${g.topBook.title}" con ${Math.round(g.topBook.progress)}%.`);
     if(!tips.length) tips.push("Vas muy bien: seguí registrando lectura todos los días.");
     $("#tipsList").innerHTML = tips.map(t => `<div class="logItem">${escapeHTML(t)}</div>`).join("");
   }
@@ -902,6 +1606,7 @@
     $("#dailyGoalInput").value = data.settings.dailyGoal || 10;
     $("#themeSelect").value = data.settings.theme || "light";
     $("#reminderSelect").value = data.settings.reminder || "on";
+    $("#noteSortSelectSettings").value = data.settings.noteSort || "created-desc";
   }
 
   function escapeHTML(str){
@@ -969,7 +1674,12 @@
         const note = form.querySelector('[name="initialNote"]').value.trim();
         if(note){
           const book = data.books[0];
-          book.notes.push({ id: uid(), text: note, createdAt: new Date().toISOString() });
+          book.notes.push({
+            id: uid(),
+            title: "Nota inicial",
+            text: note,
+            createdAt: new Date().toISOString()
+          });
           save();
         }
       });
@@ -1086,30 +1796,21 @@
               <div class="sectionTitle">Apuntes</div>
               <div class="mini">Agregá resúmenes, opiniones o ideas.</div>
             </div>
-            <button class="btn small" id="addNoteBtn">+</button>
+            <div class="inlineActions" style="justify-content:flex-end">
+              <select class="select" id="notesSortSelect" style="min-height:42px; width:auto; padding:0 12px">
+                <option value="created-desc">Más nuevos</option>
+                <option value="created-asc">Más viejos</option>
+                <option value="title-asc">A-Z</option>
+                <option value="title-desc">Z-A</option>
+              </select>
+              <button class="btn small" id="addNoteBtn">+</button>
+            </div>
           </div>
           <div class="divider"></div>
           <div class="list" id="notesList"></div>
           <div class="empty" id="noNotes" style="display:${notes.length ? "none" : "block"}">Todavía no hay apuntes.</div>
         </div>
 
-        <div class="card" style="box-shadow:none">
-          <div class="row">
-            <div>
-              <div class="sectionTitle">Historial</div>
-              <div class="mini">Lecturas registradas para este libro.</div>
-            </div>
-          </div>
-          <div class="divider"></div>
-          <div class="list" id="historyList">
-            ${logs.map(l => `
-              <div class="logItem">
-                <div class="row"><strong>${l.pages} páginas</strong><span class="chip">${fmtDate(l.date)}</span></div>
-                <div class="mini">${l.note ? escapeHTML(l.note) : "Sin nota"}</div>
-              </div>
-            `).join("") || `<div class="empty">Sin registros aún.</div>`}
-          </div>
-        </div>
       </div>
     `, () => {
       $("#detailLogBtn").addEventListener("click", () => { closeModal(); openLogModal(book.id); });
@@ -1125,24 +1826,41 @@
       });
       $("#editBookBtn").addEventListener("click", () => openEditBookModal(book.id));
       $("#addNoteBtn").addEventListener("click", () => openAddNoteModal(book.id));
+      const notesSortSelect = $("#notesSortSelect");
+      if(notesSortSelect){
+        notesSortSelect.value = data.settings.noteSort || "created-desc";
+        notesSortSelect.addEventListener("change", (e) => {
+          data.settings.noteSort = e.target.value;
+          save();
+          renderNotesList(book.id);
+        });
+      }
       renderNotesList(book.id);
     });
   }
+
 
   function renderNotesList(bookId){
     const book = getBook(bookId);
     if(!book) return;
     const notesList = $("#notesList");
     const noNotes = $("#noNotes");
-    const notes = book.notes || [];
+    const notes = sortedNotes(book.notes || []);
     noNotes.style.display = notes.length ? "none" : "block";
-    notesList.innerHTML = notes.map((n, idx) => `
+    notesList.innerHTML = notes.map((n) => `
       <div class="noteItem">
         <div class="row">
-          <strong>Apunte ${idx+1}</strong>
+          <strong>${escapeHTML(n.title || "Sin título")}</strong>
           <span class="chip muted">${n.createdAt ? fmtDate(String(n.createdAt).slice(0,10)) : "Sin fecha"}</span>
         </div>
-        <textarea class="noteEditor" data-note-id="${n.id}">${escapeHTML(n.text || "")}</textarea>
+        <div class="field" style="margin-top:10px">
+          <label>Título</label>
+          <input class="noteTitleInput" data-note-title="${n.id}" value="${escapeHTML(n.title || "")}" placeholder="Título del apunte" />
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>Contenido</label>
+          <textarea class="noteEditor" data-note-id="${n.id}" placeholder="Escribí aquí el resumen, opinión o idea principal...">${escapeHTML(n.text || "")}</textarea>
+        </div>
         <div class="inlineActions" style="margin-top:8px">
           <button class="btn small secondary" data-save-note="${n.id}">Guardar</button>
           <button class="btn small danger" data-delete-note="${n.id}">Eliminar</button>
@@ -1153,8 +1871,10 @@
     $$("[data-save-note]").forEach(btn => btn.addEventListener("click", () => {
       const nid = btn.dataset.saveNote;
       const ta = $(`[data-note-id="${nid}"]`);
+      const ti = $(`[data-note-title="${nid}"]`);
       const note = book.notes.find(n => n.id === nid);
       if(note){
+        note.title = ti.value.trim() || "Sin título";
         note.text = ta.value.trim();
         note.updatedAt = new Date().toISOString();
         save();
@@ -1179,7 +1899,11 @@
     openModal("Nuevo apunte", `
       <form class="formGrid" id="noteForm">
         <div class="field">
-          <label>Texto del apunte</label>
+          <label>Título</label>
+          <input class="input" name="title" placeholder="Ej: Idea principal del capítulo" />
+        </div>
+        <div class="field">
+          <label>Contenido</label>
           <textarea class="textarea" name="text" placeholder="Resumen del capítulo, opinión, idea importante..." required></textarea>
         </div>
         <button class="btn" type="submit">Agregar apunte</button>
@@ -1187,10 +1911,16 @@
     `, () => {
       $("#noteForm").addEventListener("submit", (e) => {
         e.preventDefault();
+        const title = e.currentTarget.querySelector('[name="title"]').value.trim();
         const text = e.currentTarget.querySelector('[name="text"]').value.trim();
         if(!text) return;
         book.notes = book.notes || [];
-        book.notes.push({ id: uid(), text, createdAt: new Date().toISOString() });
+        book.notes.push({
+          id: uid(),
+          title: title || "Sin título",
+          text,
+          createdAt: new Date().toISOString()
+        });
         save();
         showToast("Apunte agregado.");
         closeModal();
@@ -1319,6 +2049,10 @@
       currentFilter = btn.dataset.filter;
       renderBooks();
     }));
+    $("#bookSearchInput").addEventListener("input", (e) => {
+      booksSearchQuery = e.target.value || "";
+      renderBooks();
+    });
     $("#addBookBtn").addEventListener("click", openAddBookModal);
     $("#addBookShortcut").addEventListener("click", openAddBookModal);
     $("#quickLogBtn").addEventListener("click", openReadTodayQuick);
@@ -1333,6 +2067,7 @@
       data.settings.dailyGoal = clamp(Number($("#dailyGoalInput").value || 10), 1, 9999);
       data.settings.theme = $("#themeSelect").value;
       data.settings.reminder = $("#reminderSelect").value;
+      data.settings.noteSort = $("#noteSortSelectSettings").value || "created-desc";
       save();
       showToast("Configuración guardada.");
     });
@@ -1365,6 +2100,7 @@
     data.settings.dailyGoal = Number(data.settings.dailyGoal || 10);
     data.settings.theme = data.settings.theme || "light";
     data.settings.reminder = data.settings.reminder || "on";
+    data.settings.noteSort = data.settings.noteSort || "created-desc";
     setTheme(data.settings.theme);
     bindEvents();
     renderAll();
@@ -1379,5 +2115,5 @@
   firstRender();
 })();
 </script>
-</body>
-</html>
+
+</body></html>
