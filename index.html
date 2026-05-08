@@ -1,629 +1,286 @@
 <html lang="es"><head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#f4f7fb">
   <title>Lectura diaria</title>
   <style>
     :root{
       --bg:#f4f7fb;
       --card:#ffffff;
-      --text:#142033;
-      --muted:#6b7a90;
-      --line:#e4eaf2;
+      --text:#132033;
+      --muted:#65748b;
+      --line:#dfe7f1;
       --accent:#3b82f6;
       --accent2:#10b981;
-      --danger:#ef4444;
       --warn:#f59e0b;
-      --shadow: 0 10px 30px rgba(20,32,51,.08);
-      --radius: 20px;
-      --radius-sm: 14px;
-      --tap: 56px;
+      --danger:#ef4444;
+      --purple:#8b5cf6;
+      --shadow:0 10px 30px rgba(20,32,51,.08);
+      --radius:22px;
+      --tap:56px;
     }
     [data-theme="dark"]{
       --bg:#0b1220;
       --card:#111b2e;
       --text:#ecf2ff;
-      --muted:#96a3bb;
+      --muted:#93a3bb;
       --line:#20314e;
       --accent:#60a5fa;
       --accent2:#34d399;
-      --danger:#f87171;
       --warn:#fbbf24;
-      --shadow: 0 10px 30px rgba(0,0,0,.28);
+      --danger:#f87171;
+      --purple:#a78bfa;
+      --shadow:0 10px 30px rgba(0,0,0,.28);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
-      background:linear-gradient(180deg,var(--bg),color-mix(in srgb, var(--bg) 86%, #fff 14%));
+      background:linear-gradient(180deg,var(--bg),color-mix(in srgb,var(--bg) 86%,#fff 14%));
       color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
       -webkit-font-smoothing:antialiased;
       -webkit-tap-highlight-color:transparent;
     }
     button,input,select,textarea{font:inherit}
     button{cursor:pointer}
-    .app{
-      min-height:100%;
-      padding-bottom:92px;
-      max-width:900px;
-      margin:0 auto;
-    }
+    .app{min-height:100%;max-width:980px;margin:0 auto;padding-bottom:96px}
     .top{
-      position:sticky; top:0; z-index:20;
+      position:sticky;top:0;z-index:20;
       backdrop-filter:saturate(1.4) blur(18px);
-      background:color-mix(in srgb, var(--bg) 70%, transparent);
-      border-bottom:1px solid color-mix(in srgb, var(--line) 60%, transparent);
+      background:color-mix(in srgb,var(--bg) 74%,transparent);
+      border-bottom:1px solid color-mix(in srgb,var(--line) 62%,transparent);
       padding:16px 16px 12px;
     }
-    .titleRow{
-      display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
-    }
-    h1{
-      margin:0;
-      font-size:22px;
-      line-height:1.05;
-      letter-spacing:-.03em;
-    }
-    .sub{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .topActions{
-      display:flex; gap:8px;
-    }
+    .titleRow{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+    h1{margin:0;font-size:22px;line-height:1.05;letter-spacing:-.03em}
+    .sub{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.4}
+    .topActions{display:flex;gap:8px}
     .iconBtn{
-      width:44px; height:44px; border:1px solid var(--line);
-      background:var(--card); color:var(--text);
-      border-radius:14px; box-shadow:var(--shadow);
+      width:44px;height:44px;border-radius:14px;border:1px solid var(--line);
+      background:var(--card);color:var(--text);box-shadow:var(--shadow)
     }
-    .section{
-      padding:16px;
-      display:none;
-    }
+    .section{padding:16px;display:none}
     .section.active{display:block}
-    .grid{
-      display:grid; gap:12px;
-    }
-    .hero{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
+    .grid{display:grid;gap:12px}
+    .hero{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .card{
       background:var(--card);
-      border:1px solid color-mix(in srgb, var(--line) 92%, transparent);
+      border:1px solid color-mix(in srgb,var(--line) 92%,transparent);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       padding:14px;
     }
-    .stat{
-      display:flex; flex-direction:column; gap:4px;
-      min-height:104px;
-    }
-    .stat .label{font-size:12px; color:var(--muted)}
-    .stat .value{font-size:28px; font-weight:800; letter-spacing:-.04em}
-    .stat .hint{font-size:12px; color:var(--muted); margin-top:auto}
-    .row{
-      display:flex; gap:10px; align-items:center; justify-content:space-between;
-    }
+    .stat{display:flex;flex-direction:column;gap:4px;min-height:104px}
+    .stat .label{font-size:12px;color:var(--muted)}
+    .stat .value{font-size:28px;font-weight:800;letter-spacing:-.04em}
+    .stat .hint{font-size:12px;color:var(--muted);margin-top:auto;line-height:1.3}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between}
     .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:color-mix(in srgb, var(--accent) 14%, var(--card));
-      border:1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
-      color:var(--text);
-      font-size:13px;
-      font-weight:600;
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      background:color-mix(in srgb,var(--accent) 14%,var(--card));
+      border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));
+      color:var(--text);font-size:13px;font-weight:700;
     }
     .pill.green{
-      background:color-mix(in srgb, var(--accent2) 12%, var(--card));
-      border-color:color-mix(in srgb, var(--accent2) 30%, var(--line));
+      background:color-mix(in srgb,var(--accent2) 12%,var(--card));
+      border-color:color-mix(in srgb,var(--accent2) 30%,var(--line));
     }
     .pill.yellow{
-      background:color-mix(in srgb, var(--warn) 15%, var(--card));
-      border-color:color-mix(in srgb, var(--warn) 36%, var(--line));
+      background:color-mix(in srgb,var(--warn) 15%,var(--card));
+      border-color:color-mix(in srgb,var(--warn) 36%,var(--line));
     }
     .btn{
-      min-height:var(--tap);
-      padding:0 16px;
-      border:0;
-      border-radius:16px;
-      font-weight:700;
-      background:var(--accent);
-      color:white;
-      box-shadow:0 10px 24px color-mix(in srgb, var(--accent) 35%, transparent);
+      min-height:var(--tap);padding:0 16px;border:0;
+      border-radius:16px;font-weight:700;
+      background:var(--accent);color:#fff;
+      box-shadow:0 10px 24px color-mix(in srgb,var(--accent) 35%,transparent)
     }
     .btn.secondary{
-      background:color-mix(in srgb, var(--accent) 11%, var(--card));
+      background:color-mix(in srgb,var(--accent) 11%,var(--card));
       color:var(--text);
-      border:1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
+      border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));
       box-shadow:none;
     }
-    .btn.danger{
-      background:var(--danger);
-    }
-    .btn.small{
-      min-height:42px;
-      border-radius:14px;
-      padding:0 12px;
-      font-size:13px;
-    }
-    .split{
-      display:grid;
-      gap:12px;
-    }
-    .sectionTitle{
-      font-size:18px;
-      font-weight:800;
-      letter-spacing:-.03em;
-      margin:0 0 10px;
-    }
+    .btn.danger{background:var(--danger)}
+    .btn.small{min-height:42px;border-radius:14px;padding:0 12px;font-size:13px}
+    .btn.full{width:100%}
+    .split{display:grid;gap:12px}
+    .sectionTitle{font-size:18px;font-weight:800;letter-spacing:-.03em;margin:0 0 10px}
     .muted{color:var(--muted)}
-    .input, .textarea, .select{
-      width:100%;
-      border:1px solid var(--line);
-      background:var(--card);
-      color:var(--text);
-      border-radius:14px;
-      padding:14px 14px;
-      outline:none;
-      min-height:var(--tap);
+    .input,.textarea,.select,.searchInput,.noteTitleInput{
+      width:100%;border:1px solid var(--line);background:var(--card);color:var(--text);
+      border-radius:14px;padding:14px;outline:none;min-height:var(--tap)
     }
-    .textarea{min-height:110px; resize:vertical}
-    .input:focus,.textarea:focus,.select:focus{
-      border-color:color-mix(in srgb, var(--accent) 60%, var(--line));
-      box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+    .textarea{min-height:110px;resize:vertical}
+    .input:focus,.textarea:focus,.select:focus,.searchInput:focus,.noteTitleInput:focus{
+      border-color:color-mix(in srgb,var(--accent) 60%,var(--line));
+      box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent)
     }
-    .field{display:grid; gap:7px}
-    .field label{font-size:12px; color:var(--muted); font-weight:700}
-    .bookCard{
-      display:grid;
-      gap:10px;
+    .field{display:grid;gap:7px}
+    .field label{font-size:12px;color:var(--muted);font-weight:700}
+    .bookTitle{font-size:17px;font-weight:800;margin:0}
+    .bookMeta{font-size:13px;color:var(--muted);line-height:1.35}
+    .progressWrap{display:grid;gap:8px}
+    .progressBar{height:12px;border-radius:999px;background:color-mix(in srgb,var(--line) 70%,transparent);overflow:hidden}
+    .progressBar>div{
+      height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent2));
+      width:0%;transition:width .35s ease
     }
-    .bookTitle{font-size:17px; font-weight:800; margin:0}
-    .bookMeta{font-size:13px; color:var(--muted)}
-    .progressWrap{
-      display:grid; gap:8px;
+    .mini{font-size:12px;color:var(--muted)}
+    .list{display:grid;gap:10px}
+    .bookListItem,.noteItem,.logItem,.metric{
+      background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;
     }
-    .progressBar{
-      height:12px;
-      border-radius:999px;
-      background:color-mix(in srgb, var(--line) 70%, transparent);
-      overflow:hidden;
-    }
-    .progressBar > div{
-      height:100%;
-      border-radius:inherit;
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      width:0%;
-      transition:width .35s ease;
-    }
-    .mini{
-      font-size:12px; color:var(--muted);
-    }
-    .list{
-      display:grid;
-      gap:10px;
-    }
-    .bookListItem, .noteItem, .logItem, .statLine{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-    }
-    .bookListItem{
-      display:grid;
-      gap:10px;
-    }
-    .listTop{
-      display:flex;
-      justify-content:space-between;
-      gap:8px;
-      align-items:flex-start;
-    }
-    .listTop h3{
-      margin:0;
-      font-size:16px;
-      letter-spacing:-.02em;
-    }
+    .bookListItem{display:grid;gap:10px}
+    .listTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+    .listTop h3{margin:0;font-size:16px;letter-spacing:-.02em}
     .chip{
-      display:inline-flex;
-      align-items:center;
-      padding:6px 10px;
-      border-radius:999px;
-      background:color-mix(in srgb, var(--accent) 13%, var(--card));
-      color:var(--text);
-      font-size:12px;
-      font-weight:700;
-      border:1px solid color-mix(in srgb, var(--accent) 20%, var(--line));
+      display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;
+      background:color-mix(in srgb,var(--accent) 13%,var(--card));
+      color:var(--text);font-size:12px;font-weight:700;
+      border:1px solid color-mix(in srgb,var(--accent) 20%,var(--line));
+      white-space:nowrap;flex-shrink:0
     }
     .chip.done{
-      background:color-mix(in srgb, var(--accent2) 13%, var(--card));
-      border-color:color-mix(in srgb, var(--accent2) 30%, var(--line));
+      background:color-mix(in srgb,var(--accent2) 13%,var(--card));
+      border-color:color-mix(in srgb,var(--accent2) 30%,var(--line))
     }
     .chip.muted{
-      background:color-mix(in srgb, var(--line) 20%, var(--card));
-      border-color:var(--line);
-      color:var(--muted);
+      background:color-mix(in srgb,var(--line) 20%,var(--card));
+      border-color:var(--line);color:var(--muted)
     }
     .bottomNav{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      padding:10px 12px 14px;
-      display:flex;
-      justify-content:center;
-      z-index:40;
-      pointer-events:none;
+      position:fixed;left:0;right:0;bottom:0;padding:10px 12px 14px;display:flex;
+      justify-content:center;z-index:40;pointer-events:none
     }
     .navBar{
-      width:min(900px, calc(100vw - 18px));
-      background:color-mix(in srgb, var(--card) 92%, transparent);
-      border:1px solid color-mix(in srgb, var(--line) 80%, transparent);
-      box-shadow:var(--shadow);
-      border-radius:22px;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:6px;
-      padding:8px;
-      pointer-events:auto;
+      width:min(980px,calc(100vw - 18px));
+      background:color-mix(in srgb,var(--card) 92%,transparent);
+      border:1px solid color-mix(in srgb,var(--line) 80%,transparent);
+      box-shadow:var(--shadow);border-radius:22px;
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:6px;padding:8px;pointer-events:auto
     }
     .navBtn{
-      min-height:56px;
-      border:0;
-      background:transparent;
-      color:var(--muted);
-      border-radius:18px;
-      font-weight:700;
-      display:grid;
-      place-items:center;
-      gap:4px;
-      padding:8px 6px;
-      font-size:12px;
+      min-height:56px;border:0;background:transparent;color:var(--muted);
+      border-radius:18px;font-weight:700;display:grid;place-items:center;gap:4px;
+      padding:8px 6px;font-size:12px
     }
-    .navBtn.active{
-      color:var(--text);
-      background:color-mix(in srgb, var(--accent) 13%, transparent);
-    }
+    .navBtn.active{color:var(--text);background:color-mix(in srgb,var(--accent) 13%,transparent)}
     .navBtn span{font-size:18px}
     .modalBack{
-      position:fixed; inset:0; z-index:60;
-      display:none; align-items:flex-end;
-      background:rgba(6,12,24,.48);
+      position:fixed;inset:0;z-index:60;display:none;align-items:flex-end;background:rgba(6,12,24,.48)
     }
     .modalBack.show{display:flex}
     .modal{
-      width:100%;
-      max-height:92vh;
-      overflow:auto;
-      background:var(--bg);
-      border-radius:24px 24px 0 0;
-      border-top:1px solid var(--line);
-      box-shadow:0 -20px 40px rgba(0,0,0,.22);
-      padding:14px 14px 18px;
+      width:100%;max-height:92vh;overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;
+      border-top:1px solid var(--line);box-shadow:0 -20px 40px rgba(0,0,0,.22);
+      padding:14px 14px 18px
     }
-    .modalHeader{
-      display:flex; justify-content:space-between; align-items:center;
-      gap:12px; margin-bottom:12px;
-    }
-    .modalHeader h2{
-      margin:0; font-size:18px;
-    }
-    .modalHeader .close{
-      width:42px; height:42px; border-radius:14px; border:1px solid var(--line);
-      background:var(--card); color:var(--text);
-    }
-    .formGrid{display:grid; gap:12px}
-    .twoCols{display:grid; gap:12px; grid-template-columns:1fr 1fr}
-    .tabsLine{
-      display:flex; gap:8px; overflow:auto; padding-bottom:2px;
-      scrollbar-width:none;
-    }
+    .modalHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+    .modalHeader h2{margin:0;font-size:18px}
+    .modalHeader .close{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+    .formGrid{display:grid;gap:12px}
+    .twoCols{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+    .tabsLine,.sortRow,.noteSortRow,.chartTypeTabs,.inlineActions{display:flex;gap:8px;flex-wrap:wrap}
+    .tabsLine{overflow:auto;padding-bottom:2px;scrollbar-width:none;margin-bottom:12px}
     .tabsLine::-webkit-scrollbar{display:none}
-    .tab{
-      border:1px solid var(--line);
-      background:var(--card);
-      color:var(--muted);
-      border-radius:999px;
-      padding:10px 14px;
-      font-weight:700;
-      white-space:nowrap;
+    .tab,.sortBtn,.noteSortBtn,.chartTypeBtn{
+      border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;
+      padding:8px 12px;font-weight:700;font-size:12px
     }
-    .tab.active{
-      color:var(--text);
-      border-color:color-mix(in srgb, var(--accent) 30%, var(--line));
-      background:color-mix(in srgb, var(--accent) 12%, var(--card));
+    .tab.active,.sortBtn.active,.noteSortBtn.active,.chartTypeBtn.active{
+      color:var(--text);border-color:color-mix(in srgb,var(--accent) 30%,var(--line));
+      background:color-mix(in srgb,var(--accent) 12%,var(--card))
     }
-    .empty{
-      text-align:center;
-      padding:20px 14px;
-      color:var(--muted);
-    }
+    .empty{text-align:center;padding:20px 14px;color:var(--muted)}
     .noteEditor{
-      width:100%;
-      min-height:90px;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      background:var(--card);
-      color:var(--text);
-      resize:vertical;
-    }
-    .inlineActions{
-      display:flex; gap:8px; flex-wrap:wrap;
+      width:100%;min-height:90px;border:1px solid var(--line);
+      border-radius:14px;padding:12px;background:var(--card);color:var(--text);resize:vertical
     }
     .toast{
-      position:fixed; left:50%; bottom:110px; transform:translateX(-50%);
-      background:var(--text); color:var(--bg);
-      padding:10px 14px; border-radius:999px; z-index:80;
-      box-shadow:var(--shadow);
-      display:none;
-      max-width:90vw;
-      text-align:center;
-      font-size:13px;
+      position:fixed;left:50%;bottom:110px;transform:translateX(-50%);
+      background:var(--text);color:var(--bg);padding:10px 14px;border-radius:999px;
+      z-index:80;box-shadow:var(--shadow);display:none;max-width:90vw;text-align:center;font-size:13px
     }
-    .toast.show{display:block; animation:fade .18s ease}
-    @keyframes fade{from{opacity:0; transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-    .smallGrid{
-      display:grid; gap:8px;
-      grid-template-columns:repeat(2,1fr);
-    }
-    .goalBox{
-      display:grid; gap:10px;
-    }
-    .goalBar{
-      height:10px; border-radius:999px; overflow:hidden; background:color-mix(in srgb, var(--line) 75%, transparent)
-    }
-    .goalBar > div{
-      height:100%; width:0%; border-radius:inherit;
-      background:linear-gradient(90deg,var(--accent2),var(--accent));
-    }
-    .divider{
-      height:1px; background:var(--line); margin:12px 0;
-    }
-    .bookQuickActions{display:flex; gap:8px; flex-wrap:wrap}
-    .kbd{
-      font-size:11px; padding:3px 7px; border-radius:6px; border:1px solid var(--line); color:var(--muted);
-    }
-
-    .searchRow{
-      display:grid;
-      gap:10px;
-      margin-bottom:12px;
-    }
+    .toast.show{display:block;animation:fade .18s ease}
+    @keyframes fade{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .smallGrid{display:grid;gap:8px;grid-template-columns:repeat(2,1fr)}
+    .goalBox{display:grid;gap:10px}
+    .goalBar{height:10px;border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--line) 75%,transparent)}
+    .goalBar>div{height:100%;width:0%;border-radius:inherit;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+    .searchRow{display:grid;gap:10px;margin-bottom:12px}
     .searchInput{
-      width:100%;
-      min-height:var(--tap);
-      border:1px solid var(--line);
-      background:var(--card);
-      color:var(--text);
-      border-radius:16px;
-      padding:0 14px;
-      outline:none;
+      min-height:var(--tap);padding:0 14px;border-radius:16px
     }
-    .searchInput:focus{
-      border-color:color-mix(in srgb, var(--accent) 60%, var(--line));
-      box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
-    }
-    .chartCard{
-      display:grid;
-      gap:12px;
-    }
-    .chartHead{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:flex-start;
-    }
-    .chartTitle{
-      font-size:16px;
-      font-weight:800;
-      letter-spacing:-.02em;
-      margin:0;
-    }
-    .chartSub{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:4px;
-    }
-    .chartBars{
-      display:grid;
-      gap:10px;
-      align-items:end;
-      min-height:170px;
-    }
-    .chartBars.week{
-      grid-template-columns:repeat(7,1fr);
-    }
-    .chartBars.month{
-      grid-template-columns:repeat(4,1fr);
-    }
-    .chartBar{
-      display:grid;
-      gap:8px;
-      justify-items:center;
-      align-items:end;
-    }
-    .chartBarTrack{
-      width:100%;
-      height:132px;
-      display:flex;
-      align-items:flex-end;
-    }
-    .chartBarFill{
-      width:100%;
-      min-height:8px;
-      border-radius:14px 14px 4px 4px;
-      background:linear-gradient(180deg,var(--accent),var(--accent2));
-    }
-    .chartBarLabel{
-      font-size:11px;
-      color:var(--muted);
-      text-align:center;
-    }
-    .chartBarValue{
-      font-size:12px;
-      font-weight:800;
-      text-align:center;
-    }
-    .metricGrid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-    }
-    .metric{
-      border:1px solid var(--line);
-      background:var(--card);
-      border-radius:16px;
-      padding:12px;
-      display:grid;
-      gap:4px;
-      min-height:88px;
-    }
+    .metricGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .metric{display:grid;gap:4px;min-height:88px}
     .metric .name{font-size:12px;color:var(--muted);font-weight:700}
     .metric .num{font-size:22px;font-weight:800;letter-spacing:-.03em}
     .metric .meta{font-size:12px;color:var(--muted)}
-    .chartSvg{
-      width:100%;
-      height:180px;
-      display:block;
+    .chartCard{display:grid;gap:12px}
+    .chartHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .chartTitle{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:0}
+    .chartSub{font-size:12px;color:var(--muted);margin-top:4px}
+    .chartBars{display:grid;gap:10px;align-items:end;min-height:170px}
+    .chartBars.week{grid-template-columns:repeat(7,1fr)}
+    .chartBars.month{grid-template-columns:repeat(4,1fr)}
+    .chartBar{display:grid;gap:8px;justify-items:center;align-items:end}
+    .chartBarTrack{width:100%;height:132px;display:flex;align-items:flex-end}
+    .chartBarFill{
+      width:100%;min-height:8px;border-radius:14px 14px 4px 4px;
+      background:linear-gradient(180deg,var(--accent),var(--accent2))
     }
-    .chartAreaPath{
-      fill:color-mix(in srgb, var(--accent) 12%, transparent);
-      stroke:none;
+    .chartBarLabel{font-size:11px;color:var(--muted);text-align:center}
+    .chartBarValue{font-size:12px;font-weight:800;text-align:center}
+    .lineChartWrap{width:100%;overflow:hidden}
+    .lineChartWrap svg{width:100%;display:block}
+    .donutWrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+    .donutSvg{flex-shrink:0}
+    .donutLegend{display:grid;gap:6px;flex:1;min-width:120px}
+    .donutItem{display:flex;align-items:center;gap:8px;font-size:12px}
+    .donutDot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .factCard{
+      background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,var(--card)),color-mix(in srgb,var(--purple) 8%,var(--card)));
+      border:1px solid color-mix(in srgb,var(--accent) 20%,var(--line));
+      border-radius:16px;padding:14px;display:grid;gap:8px
     }
-    .chartLinePath{
-      fill:none;
-      stroke:var(--accent);
-      stroke-width:2.8;
-      stroke-linecap:round;
-      stroke-linejoin:round;
+    .factIcon{font-size:22px}
+    .factText{font-size:14px;font-weight:600;line-height:1.45}
+    .factMeta{font-size:12px;color:var(--muted)}
+    .factsGrid{display:grid;gap:10px}
+    .calendar{
+      display:grid;grid-template-columns:repeat(7,1fr);gap:6px
     }
-    .chartPoint{
-      fill:var(--card);
-      stroke:var(--accent);
-      stroke-width:2;
+    .dayCell{
+      min-height:42px;border:1px solid var(--line);border-radius:12px;padding:6px;
+      background:var(--card);display:grid;align-content:space-between
     }
-    .chartAxisLabels{
-      display:grid;
-      grid-template-columns:repeat(14,1fr);
-      gap:4px;
-      font-size:10px;
-      color:var(--muted);
-      margin-top:-2px;
-    }
-    .chartAxisLabels span{
-      text-align:center;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .chartLineLegend{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:8px;
-      font-size:11px;
-      color:var(--muted);
-    }
-    .chartLineLegend div{
-      display:grid;
-      gap:2px;
-      text-align:center;
-    }
-    .chartLineLegend strong{
-      color:var(--text);
-      font-size:13px;
-    }
-    .pieWrap{
-      position:relative;
-      width:180px;
-      height:180px;
-      margin:0 auto;
-    }
-    .pieSvg{
-      width:100%;
-      height:100%;
-      display:block;
-      transform:rotate(0deg);
-    }
-    .pieCenter{
-      position:absolute;
-      inset:0;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      pointer-events:none;
-    }
-    .pieValue{
-      font-size:28px;
-      font-weight:800;
-      letter-spacing:-.03em;
-    }
-    .pieLabel{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:-6px;
-    }
-    .pieLegend{
-      display:grid;
-      gap:8px;
-    }
-    .pieLegend div{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:8px 10px;
-      border-radius:14px;
-      background:color-mix(in srgb, var(--line) 16%, var(--card));
-      border:1px solid var(--line);
-      font-size:13px;
-    }
-    .pieLegend strong{
-      font-size:13px;
-    }
-    .pieSwatch{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      flex:0 0 10px;
-    }
-    .noteTitleInput{
-      width:100%;
-      border:1px solid var(--line);
-      background:var(--card);
-      color:var(--text);
-      border-radius:14px;
-      padding:12px 14px;
-      outline:none;
-      min-height:var(--tap);
-      font-weight:700;
-    }
-    .noteTitleInput:focus{
-      border-color:color-mix(in srgb, var(--accent) 60%, var(--line));
-      box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
-    }
-
+    .dayCell .d{font-size:11px;color:var(--muted)}
+    .dayCell .v{font-size:13px;font-weight:800}
+    .dayCell.active{background:color-mix(in srgb,var(--accent2) 12%,var(--card))}
+    .dayCell.today{outline:2px solid color-mix(in srgb,var(--accent) 50%,transparent)}
+    .hidden{display:none !important}
     @media (min-width:720px){
       .split{grid-template-columns:1.1fr .9fr}
       .hero{grid-template-columns:repeat(4,1fr)}
-      .modal{
-        width:min(760px,100%);
-        margin:0 auto;
-        border-radius:24px;
-      }
-      .modalBack{align-items:center; justify-content:center}
+      .modal{width:min(780px,100%);margin:0 auto;border-radius:24px}
+      .modalBack{align-items:center;justify-content:center}
     }
   </style>
 </head>
 <body data-theme="light">
-  <div class="app" id="app" data-theme="light">
+  <div class="app" id="app">
     <header class="top">
       <div class="titleRow">
         <div>
           <h1>Lectura diaria</h1>
-          <p class="sub" id="subtitle">Tu hábito de lectura, siempre a mano.</p>
+          <p class="sub" id="subtitle">Todavía no registraste lectura hoy. Podés hacerlo en segundos.</p>
         </div>
         <div class="topActions">
           <button class="iconBtn" id="themeBtn" title="Cambiar tema">🌙</button>
@@ -633,8 +290,18 @@
     </header>
 
     <main>
-      <section class="section" id="homeSection">
+      <section class="section active" id="homeSection">
         <div class="grid">
+          <div class="card" id="homeReminderCard">
+            <div class="row">
+              <div>
+                <div class="sectionTitle" style="margin:0">Hoy</div>
+                <div class="mini" id="homeReminderText">Ya registraste lectura hoy. Podés sumar otra sesión corta.</div>
+              </div>
+              <span class="pill green" id="homeStatusPill">Meta cumplida</span>
+            </div>
+          </div>
+
           <div class="hero">
             <div class="card stat">
               <div class="label">Racha actual</div>
@@ -648,12 +315,12 @@
             </div>
             <div class="card stat">
               <div class="label">Páginas hoy</div>
-              <div class="value" id="pagesToday">13</div>
+              <div class="value" id="pagesToday">10</div>
               <div class="hint" id="goalText">Meta diaria: 10 páginas</div>
             </div>
             <div class="card stat">
               <div class="label">Libros</div>
-              <div class="value" id="booksTotal">1</div>
+              <div class="value" id="booksTotal">12</div>
               <div class="hint" id="booksHint">En progreso y terminados.</div>
             </div>
           </div>
@@ -662,7 +329,7 @@
             <div class="row">
               <div>
                 <div class="sectionTitle" style="margin:0">Objetivo de hoy</div>
-                <div class="mini" id="goalProgressText">13 / 10 páginas</div>
+                <div class="mini" id="goalProgressText">10 / 10 páginas</div>
               </div>
               <button class="btn small secondary" id="editGoalBtn">Editar meta</button>
             </div>
@@ -677,313 +344,412 @@
             <div class="card">
               <div class="row">
                 <div>
-                  <div class="sectionTitle">Libros activos</div>
-                  <div class="mini">Seguimiento rápido de progreso.</div>
+                  <div class="sectionTitle">Libro activo</div>
+                  <div class="mini">Abrí el libro que estás leyendo más seguido.</div>
                 </div>
                 <button class="btn small secondary" id="goBooksBtn">Ver todos</button>
               </div>
               <div class="divider"></div>
-              <div class="list" id="activeBooksList">
-      <div class="bookListItem">
-        <div class="listTop">
-          <div>
-            <h3>La psicología del dinero</h3>
-            <div class="bookMeta">morgan housel · 300 páginas</div>
-          </div>
-          <span class="chip muted">Leyendo</span>
+              <div id="featuredBookBox"><div class="bookListItem" style="box-shadow:none">
+      <div class="listTop">
+        <div>
+          <h3>La psicología del dinero</h3>
+          <div class="bookMeta">morgan housel · 300 páginas</div>
         </div>
-        <div class="progressWrap">
-          <div class="row">
-            <div class="mini">113 leídas</div>
-            <div class="mini">38%</div>
-          </div>
-          <div class="progressBar"><div style="width:37.666666666666664%"></div></div>
-        </div>
-        <div class="bookQuickActions">
-          <button class="btn small" onclick="window.__app.openBook('dyn0fgirmnphvl4w')">Abrir</button>
-          <button class="btn small secondary" onclick="window.__app.logForBook('dyn0fgirmnphvl4w')">+ Registrar</button>
-        </div>
+        <span class="chip muted">Activo</span>
       </div>
-    </div>
-              <div class="empty" id="noActiveBooks" style="display:none">
-                No hay libros activos todavía. Agregá tu primero para empezar.
-              </div>
+      <div class="progressWrap">
+        <div class="row">
+          <div class="mini">110 leídas · faltan 190</div>
+          <div class="mini">37%</div>
+        </div>
+        <div class="progressBar"><div style="width:36.666666666666664%"></div></div>
+      </div>
+      <div class="inlineActions">
+        <button class="btn small" data-action="open-book" data-book-id="dyn0fgirmnphvl4w">Abrir</button>
+        <button class="btn small secondary" data-action="log-book" data-book-id="dyn0fgirmnphvl4w">Registrar</button>
+      </div>
+    </div></div>
+              <div class="empty hidden" id="noFeaturedBook">Todavía no hay libros activos. Creá tu primer libro.</div>
             </div>
+          </div>
 
-            <div class="card">
-              <div class="row">
-                <div>
-                  <div class="sectionTitle">Datos interesantes</div>
-                  <div class="mini">Información útil sobre tu lectura y tus libros.</div>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="list" id="insightsList"><div class="logItem">Tenés 113 páginas leídas registradas en total.</div><div class="logItem">Tu promedio por día activo es de 14.1 páginas.</div><div class="logItem">Tu día más lector fue 08 abr. 2026 con 25 páginas.</div><div class="logItem">Tu libro más avanzado es "La psicología del dinero".</div><div class="logItem">La última lectura registrada fue el 08 may. 2026.</div><div class="logItem">9 apuntes creados en 1 libros.</div><div class="logItem">38% completado · 113 páginas leídas.</div><div class="logItem">A este ritmo, te quedarían aprox. 14 días para terminarlo.</div></div>
-              <div class="empty" id="noInsights" style="display:none">
-                Empezá a leer y a registrar para ver datos interesantes acá.
-              </div>
-            </div>
+          <div class="card">
+            <div class="sectionTitle">Datos interesantes</div>
+            <div class="factsGrid" id="factsGrid">
+      <div class="factCard">
+        <div class="factIcon">📖</div>
+        <div class="factText">Llevás 27.500 palabras leídas estimadas.</div>
+        <div class="factMeta">Estimado a 250 palabras por página.</div>
+      </div>
+      <div class="factCard">
+        <div class="factIcon">🎯</div>
+        <div class="factText">A tu ritmo actual terminás "La psicología del dinero" en ~14 días.</div>
+        <div class="factMeta">Promedio: 13.8 pág/día · aprox. 22-may.</div>
+      </div>
+      <div class="factCard">
+        <div class="factIcon">📅</div>
+        <div class="factText">Mié es tu día más productivo.</div>
+        <div class="factMeta">Con 43 páginas acumuladas.</div>
+      </div>
+      <div class="factCard">
+        <div class="factIcon">⚡</div>
+        <div class="factText">Tu mejor día reciente fue vie 08 con 10 páginas.</div>
+        <div class="factMeta">¡Eso es constancia!</div>
+      </div>
+      <div class="factCard">
+        <div class="factIcon">✅</div>
+        <div class="factText">Terminaste 7 libros.</div>
+        <div class="factMeta">Promedio: 13.8 pág/día sobre días activos.</div>
+      </div>
+      <div class="factCard">
+        <div class="factIcon">✏️</div>
+        <div class="factText">Tenés 19 apuntes en 12 libros.</div>
+        <div class="factMeta">Los apuntes ayudan a recordar y conectar ideas.</div>
+      </div>
+      <div class="factCard">
+        <div class="factIcon">🚀</div>
+        <div class="factText">Tu libro más avanzado es "La psicología del dinero" con 37% completado.</div>
+        <div class="factMeta">Ya estás cerca de terminarlo.</div>
+      </div></div>
           </div>
         </div>
       </section>
 
-      
       <section class="section" id="booksSection">
         <div class="row" style="margin-bottom:12px">
           <div>
             <div class="sectionTitle">Tus libros</div>
-            <div class="mini">En progreso y leídos.</div>
+            <div class="mini">En progreso, terminados y archivados.</div>
           </div>
           <button class="btn" id="addBookBtn">+ Agregar libro</button>
         </div>
+
         <div class="tabsLine" style="margin-bottom:12px">
-          <button class="tab active" data-filter="all">Todos</button>
-          <button class="tab" data-filter="reading">Leyendo</button>
+          <button class="tab" data-filter="all">Todos</button>
+          <button class="tab active" data-filter="reading">Leyendo</button>
           <button class="tab" data-filter="done">Terminados</button>
+          <button class="tab" data-filter="archived">Archivados</button>
         </div>
+
         <div class="searchRow">
           <input class="searchInput" id="bookSearchInput" type="search" placeholder="Buscar por título o autor">
         </div>
-        <div class="list" id="booksList">
-      <div class="bookListItem">
-        <div class="listTop">
-          <div>
-            <h3>La psicología del dinero</h3>
-            <div class="bookMeta">morgan housel · Inicio: 08 abr. 2026</div>
-          </div>
-          <span class="chip ">Leyendo</span>
+
+        <div class="sortRow" id="bookSortRow">
+          <span class="mini" style="font-weight:700;align-self:center">Ordenar:</span>
+          <button class="sortBtn active" data-sort="recent">Reciente</button>
+          <button class="sortBtn" data-sort="alpha">A→Z</button>
+          <button class="sortBtn" data-sort="progress">Progreso</button>
+          <button class="sortBtn" data-sort="pages">Más páginas</button>
+          <button class="sortBtn" data-sort="notes">Más apuntes</button>
         </div>
-        <div class="progressWrap">
-          <div class="row">
-            <div class="mini">113 / 300 páginas</div>
-            <div class="mini">38%</div>
-          </div>
-          <div class="progressBar"><div style="width:37.666666666666664%"></div></div>
+
+        <div class="list" id="booksList"><div class="bookListItem">
+      <div class="listTop">
+        <div>
+          <h3>La psicología del dinero</h3>
+          <div class="bookMeta">morgan housel · Inicio: 08 abr. 2026</div>
         </div>
-        <div class="mini">Promedio: 14.1 pág/día · Días leyendo: 8 · Duración: 31 días · Apuntes: 9</div>
-        <div class="bookQuickActions">
-          <button class="btn small" onclick="window.__app.openBook('dyn0fgirmnphvl4w')">Ver detalles</button>
-          <button class="btn small secondary" onclick="window.__app.logForBook('dyn0fgirmnphvl4w')">Registrar páginas</button>
-          <button class="btn small secondary" onclick="window.__app.toggleBookDone('dyn0fgirmnphvl4w')">Marcar terminado</button>
-        </div>
+        <span class="chip muted">Leyendo</span>
       </div>
-    </div>
-        <div class="empty" id="noBooks" style="display:none">
-          No hay libros guardados. Creá tu primer libro para empezar.
+      <div class="progressWrap">
+        <div class="row">
+          <div class="mini">110 / 300 páginas</div>
+          <div class="mini">37%</div>
         </div>
+        <div class="progressBar"><div style="width:36.666666666666664%"></div></div>
+      </div>
+      <div class="mini">Promedio: 13.8 pág/día · Días activos: 8 · Apuntes: 8</div>
+      <div class="inlineActions">
+        <button class="btn small" data-action="open-book" data-book-id="dyn0fgirmnphvl4w">Ver detalles</button>
+        <button class="btn small secondary" data-action="log-book" data-book-id="dyn0fgirmnphvl4w">Registrar páginas</button>
+        <button class="btn small secondary" data-action="toggle-done" data-book-id="dyn0fgirmnphvl4w">Terminar</button>
+        <button class="btn small secondary" data-action="toggle-archive" data-book-id="dyn0fgirmnphvl4w">Archivar</button>
+      </div>
+    </div></div>
+        <div class="empty hidden" id="noBooks">No hay libros guardados. Creá tu primer libro para empezar.</div>
       </section>
 
-      <section class="section active" id="statsSection">
+      <section class="section" id="statsSection">
         <div class="grid">
           <div class="card">
             <div class="sectionTitle">Resumen general</div>
             <div class="metricGrid" id="globalStats">
       <div class="metric">
         <div class="name">Páginas totales</div>
-        <div class="num">113</div>
+        <div class="num">110</div>
         <div class="meta">Todas tus lecturas registradas</div>
       </div>
-    
       <div class="metric">
         <div class="name">Libros totales</div>
-        <div class="num">1</div>
-        <div class="meta">0 terminados · 1 en progreso</div>
+        <div class="num">12</div>
+        <div class="meta">7 terminados · 1 activos</div>
       </div>
-    
       <div class="metric">
         <div class="name">Días activos</div>
         <div class="num">8</div>
-        <div class="meta">Días distintos con al menos una lectura</div>
+        <div class="meta">Días distintos con lectura</div>
       </div>
-    
       <div class="metric">
         <div class="name">Promedio diario</div>
-        <div class="num">14.1</div>
-        <div class="meta">Promedio sobre días activos</div>
+        <div class="num">13.8</div>
+        <div class="meta">Sobre días activos</div>
       </div>
-    
       <div class="metric">
-        <div class="name">Notas creadas</div>
-        <div class="num">9</div>
-        <div class="meta">1 libros con apuntes</div>
+        <div class="name">Apuntes</div>
+        <div class="num">19</div>
+        <div class="meta">12 libros con apuntes</div>
       </div>
-    
       <div class="metric">
         <div class="name">Racha actual</div>
         <div class="num">1</div>
         <div class="meta">Mejor racha: 4 días</div>
-      </div>
-    </div>
+      </div></div>
           </div>
 
           <div class="card chartCard">
             <div class="chartHead">
               <div>
-                <div class="chartTitle">Páginas leídas en 7 días</div>
-                <div class="chartSub">Actividad diaria reciente, con foco en constancia.</div>
+                <div class="chartTitle">Páginas leídas — últimos 7 días</div>
+                <div class="chartSub">Actividad diaria reciente.</div>
               </div>
-              <div class="chip muted" id="weekTotalChip">13 pág.</div>
+              <div class="chip muted" id="weekTotalChip">10 pág.</div>
             </div>
-            <div id="weeklyChart" class="chartBars week">
-        <div class="chartBar" title="sáb 02 · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">sáb</div>
-        </div>
+            <div class="chartTypeTabs" id="weeklyTypeTabs">
+              <button class="chartTypeBtn" data-chart="weeklyChart" data-type="bar">Barras</button>
+              <button class="chartTypeBtn active" data-chart="weeklyChart" data-type="line">Líneas</button>
+            </div>
+            <div id="weeklyChart" class="lineChartWrap"><svg viewBox="0 0 300 150" style="overflow:visible">
+      <defs>
+        <linearGradient id="lgweeklyChart" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity=".25"></stop>
+          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+      <polygon points="28,112 28,112 68.66666666666666,112 109.33333333333333,112 150,112 190.66666666666666,112 231.33333333333331,112 272,28 272,112" fill="url(#lgweeklyChart)"></polygon>
+      <polyline points="28,112 68.66666666666666,112 109.33333333333333,112 150,112 190.66666666666666,112 231.33333333333331,112 272,28" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
       
-        <div class="chartBar" title="dom 03 · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">dom</div>
-        </div>
-      
-        <div class="chartBar" title="lun 04 · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">lun</div>
-        </div>
-      
-        <div class="chartBar" title="mar 05 · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">mar</div>
-        </div>
-      
-        <div class="chartBar" title="mié 06 · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">mié</div>
-        </div>
-      
-        <div class="chartBar" title="jue 07 · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">jue</div>
-        </div>
-      
-        <div class="chartBar" title="vie 08 · 13 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:100%"></div>
-          </div>
-          <div class="chartBarValue">13</div>
-          <div class="chartBarLabel">vie</div>
-        </div>
-      </div>
+      <circle cx="28" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>sáb 02: 0</title>
+      </circle>
+      <circle cx="68.66666666666666" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>dom 03: 0</title>
+      </circle>
+      <circle cx="109.33333333333333" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>lun 04: 0</title>
+      </circle>
+      <circle cx="150" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>mar 05: 0</title>
+      </circle>
+      <circle cx="190.66666666666666" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>mié 06: 0</title>
+      </circle>
+      <circle cx="231.33333333333331" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>jue 07: 0</title>
+      </circle>
+      <circle cx="272" cy="28" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>vie 08: 10</title>
+      </circle>
+      <text x="28" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">S</text><text x="68.66666666666666" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">D</text><text x="109.33333333333333" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">L</text><text x="150" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">M</text><text x="190.66666666666666" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">M</text><text x="231.33333333333331" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">J</text><text x="272" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">V</text>
+    </svg></div>
           </div>
 
           <div class="card chartCard">
             <div class="chartHead">
               <div>
-                <div class="chartTitle">Tendencia de 4 semanas</div>
+                <div class="chartTitle">Tendencia — últimas 4 semanas</div>
                 <div class="chartSub">Sumatoria de páginas por semana.</div>
               </div>
-              <div class="chip muted" id="monthTotalChip">69 pág.</div>
+              <div class="chip muted" id="monthTotalChip">66 pág.</div>
             </div>
-            <div id="monthlyChart" class="chartBars month">
-        <div class="chartBar" title="11-abr. - 17-abr. · 56 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:100%"></div>
-          </div>
-          <div class="chartBarValue">56</div>
-          <div class="chartBarLabel">S1</div>
-        </div>
+            <div class="chartTypeTabs" id="monthlyTypeTabs">
+              <button class="chartTypeBtn" data-chart="monthlyChart" data-type="bar">Barras</button>
+              <button class="chartTypeBtn active" data-chart="monthlyChart" data-type="line">Líneas</button>
+              <button class="chartTypeBtn" data-chart="monthlyChart" data-type="donut">Circular</button>
+            </div>
+            <div id="monthlyChart" class="lineChartWrap"><svg viewBox="0 0 300 150" style="overflow:visible">
+      <defs>
+        <linearGradient id="lgmonthlyChart" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity=".25"></stop>
+          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+      <polygon points="28,112 28,28 109.33333333333333,112 190.66666666666666,112 272,97 272,112" fill="url(#lgmonthlyChart)"></polygon>
+      <polyline points="28,28 109.33333333333333,112 190.66666666666666,112 272,97" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
       
-        <div class="chartBar" title="18-abr. - 24-abr. · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">S2</div>
-        </div>
-      
-        <div class="chartBar" title="25-abr. - 01-may. · 0 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:8%"></div>
-          </div>
-          <div class="chartBarValue">0</div>
-          <div class="chartBarLabel">S3</div>
-        </div>
-      
-        <div class="chartBar" title="02-may. - 08-may. · 13 páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:23.214285714285715%"></div>
-          </div>
-          <div class="chartBarValue">13</div>
-          <div class="chartBarLabel">S4</div>
-        </div>
-      </div>
+      <circle cx="28" cy="28" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>11-abr. - 17-abr.: 56</title>
+      </circle>
+      <circle cx="109.33333333333333" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>18-abr. - 24-abr.: 0</title>
+      </circle>
+      <circle cx="190.66666666666666" cy="112" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>25-abr. - 01-may.: 0</title>
+      </circle>
+      <circle cx="272" cy="97" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>02-may. - 08-may.: 10</title>
+      </circle>
+      <text x="28" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">S1</text><text x="109.33333333333333" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">S2</text><text x="190.66666666666666" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">S3</text><text x="272" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">S4</text>
+    </svg></div>
           </div>
 
           <div class="card chartCard">
             <div class="chartHead">
               <div>
-                <div class="chartTitle">Línea de lectura</div>
-                <div class="chartSub">Páginas por día en las últimas 2 semanas.</div>
+                <div class="chartTitle">Distribución de lectura</div>
+                <div class="chartSub">Páginas leídas por libro.</div>
               </div>
-              <div class="chip muted" id="lineTotalChip">13 pág.</div>
             </div>
-            <div id="dailyLineChart">
-      <svg viewBox="0 0 100 180" class="chartSvg" preserveAspectRatio="none" aria-label="Gráfico de líneas">
-        <path d="M 0 168 L 0.0,168.0 L 7.7,168.0 L 15.4,168.0 L 23.1,168.0 L 30.8,168.0 L 38.5,168.0 L 46.2,168.0 L 53.8,168.0 L 61.5,168.0 L 69.2,168.0 L 76.9,168.0 L 84.6,168.0 L 92.3,168.0 L 100.0,12.0 L 100 168" class="chartAreaPath"></path>
-        <polyline points="0.0,168.0 7.7,168.0 15.4,168.0 23.1,168.0 30.8,168.0 38.5,168.0 46.2,168.0 53.8,168.0 61.5,168.0 69.2,168.0 76.9,168.0 84.6,168.0 92.3,168.0 100.0,12.0" class="chartLinePath"></polyline>
-        <circle cx="0.0" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="7.7" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="15.4" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="23.1" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="30.8" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="38.5" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="46.2" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="53.8" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="61.5" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="69.2" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="76.9" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="84.6" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="92.3" cy="168.0" r="2.8" class="chartPoint"></circle><circle cx="100.0" cy="12.0" r="2.8" class="chartPoint"></circle>
+            <div id="booksDonutChart"><div class="donutWrap">
+      <svg class="donutSvg" width="140" height="140" viewBox="0 0 140 140">
+        <path d="M70,16 A54,54 0 1,1 69.99999999999999,16 L70,38 A32,32 0 1,0 70,38 Z" fill="var(--accent)" opacity=".92"><title>La psicología del dinero: 110</title></path>
+        <text x="70" y="66" text-anchor="middle" font-size="11" fill="var(--muted)">Total</text>
+        <text x="70" y="82" text-anchor="middle" font-size="17" font-weight="800" fill="var(--text)">110</text>
       </svg>
-      <div class="chartAxisLabels">
-        <span>25-abr.</span><span>26-abr.</span><span>27-abr.</span><span>28-abr.</span><span>29-abr.</span><span>30-abr.</span><span>01-may.</span><span>02-may.</span><span>03-may.</span><span>04-may.</span><span>05-may.</span><span>06-may.</span><span>07-may.</span><span>08-may.</span>
-      </div>
-      <div class="chartLineLegend">
-        <div><strong>0</strong><span>25-abr.</span></div><div><strong>0</strong><span>26-abr.</span></div><div><strong>0</strong><span>27-abr.</span></div><div><strong>0</strong><span>28-abr.</span></div><div><strong>0</strong><span>29-abr.</span></div><div><strong>0</strong><span>30-abr.</span></div><div><strong>0</strong><span>01-may.</span></div><div><strong>0</strong><span>02-may.</span></div><div><strong>0</strong><span>03-may.</span></div><div><strong>0</strong><span>04-may.</span></div><div><strong>0</strong><span>05-may.</span></div><div><strong>0</strong><span>06-may.</span></div><div><strong>0</strong><span>07-may.</span></div><div><strong>13</strong><span>08-may.</span></div>
-      </div>
-    </div>
+      <div class="donutLegend"><div class="donutItem"><div class="donutDot" style="background:var(--accent)"></div>
+        <span>La psicología del dinero <strong>100%</strong></span></div></div>
+    </div></div>
           </div>
 
           <div class="card chartCard">
             <div class="chartHead">
               <div>
-                <div class="chartTitle">Libros por estado</div>
-                <div class="chartSub">Vista circular de tu biblioteca.</div>
+                <div class="chartTitle">Calendario reciente</div>
+                <div class="chartSub">Últimos 30 días. Verde = hubo lectura.</div>
               </div>
-              <div class="chip muted" id="pieTotalChip">1 libros</div>
             </div>
-            <div id="booksPieChart">
-      <div class="pieWrap">
-        <svg viewBox="0 0 100 100" class="pieSvg" aria-label="Gráfico circular">
-          <circle r="42" cx="50" cy="50" fill="transparent" style="stroke:color-mix(in srgb, var(--line) 60%, transparent)" stroke-width="16"></circle>
-          
-        <circle r="42" cx="50" cy="50" fill="transparent" style="stroke:var(--accent)" stroke-width="16" stroke-dasharray="263.89378290154264 0" stroke-dashoffset="0" transform="rotate(-90 50 50)"></circle>
-        <circle r="42" cx="50" cy="50" fill="transparent" style="stroke:var(--accent2)" stroke-width="16" stroke-dasharray="0 263.89378290154264" stroke-dashoffset="-263.89378290154264" transform="rotate(-90 50 50)"></circle>
-        </svg>
-        <div class="pieCenter">
-          <div class="pieValue">1</div>
-          <div class="pieLabel">libros</div>
-        </div>
+            <div id="calendarGrid" class="calendar">
+      <div class="dayCell active ">
+        <div class="d">9</div>
+        <div class="v">13</div>
       </div>
-      <div class="pieLegend">
-        <div><span class="pieSwatch" style="background:var(--accent)"></span><span>Leyendo</span><strong>1</strong></div><div><span class="pieSwatch" style="background:var(--accent2)"></span><span>Terminados</span><strong>0</strong></div>
+      <div class="dayCell active ">
+        <div class="d">10</div>
+        <div class="v">6</div>
       </div>
-    </div>
+      <div class="dayCell  ">
+        <div class="d">11</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">12</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">13</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell active ">
+        <div class="d">14</div>
+        <div class="v">22</div>
+      </div>
+      <div class="dayCell active ">
+        <div class="d">15</div>
+        <div class="v">18</div>
+      </div>
+      <div class="dayCell active ">
+        <div class="d">16</div>
+        <div class="v">7</div>
+      </div>
+      <div class="dayCell active ">
+        <div class="d">17</div>
+        <div class="v">9</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">18</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">19</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">20</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">21</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">22</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">23</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">24</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">25</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">26</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">27</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">28</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">29</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">30</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">1</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">2</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">3</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">4</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">5</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">6</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell  ">
+        <div class="d">7</div>
+        <div class="v">·</div>
+      </div>
+      <div class="dayCell active today">
+        <div class="d">8</div>
+        <div class="v">10</div>
+      </div></div>
           </div>
 
           <div class="card">
-            <div class="sectionTitle">Sugerencias útiles</div>
-            <div class="list" id="tipsList"><div class="logItem">Tu libro más avanzado es "La psicología del dinero" con 38%.</div></div>
+            <div class="sectionTitle">Sugerencias</div>
+            <div class="list" id="tipsList"><div class="logItem">Tu libro más avanzado es "La psicología del dinero" con 37%.</div></div>
           </div>
         </div>
       </section>
 
-<section class="section" id="settingsSection">
+      <section class="section" id="settingsSection">
         <div class="grid">
           <div class="card">
             <div class="sectionTitle">Configuración</div>
@@ -1006,15 +772,6 @@
                   <option value="off">Desactivado</option>
                 </select>
               </div>
-              <div class="field">
-                <label>Orden de apuntes</label>
-                <select class="select" id="noteSortSelectSettings">
-                  <option value="created-desc">Más nuevos primero</option>
-                  <option value="created-asc">Más viejos primero</option>
-                  <option value="title-asc">A-Z</option>
-                  <option value="title-desc">Z-A</option>
-                </select>
-              </div>
             </div>
             <div class="divider"></div>
             <div class="inlineActions">
@@ -1022,7 +779,6 @@
               <button class="btn secondary" id="resetDataBtn">Borrar datos</button>
             </div>
           </div>
-
           <div class="card">
             <div class="sectionTitle">Importar / exportar</div>
             <p class="muted">Guardá una copia o recuperá tus datos con JSON.</p>
@@ -1039,9 +795,9 @@
 
   <nav class="bottomNav">
     <div class="navBar">
-      <button class="navBtn" data-section="homeSection"><span>🏠</span>Inicio</button>
+      <button class="navBtn active" data-section="homeSection"><span>🏠</span>Inicio</button>
       <button class="navBtn" data-section="booksSection"><span>📚</span>Libros</button>
-      <button class="navBtn active" data-section="statsSection"><span>📈</span>Stats</button>
+      <button class="navBtn" data-section="statsSection"><span>📈</span>Stats</button>
       <button class="navBtn" data-section="settingsSection"><span>⚙️</span>Ajustes</button>
     </div>
   </nav>
@@ -1049,651 +805,822 @@
   <div class="modalBack" id="modalBack" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modalHeader">
-        <h2 id="modalTitle">Libro: La psicología del dinero</h2>
+        <h2 id="modalTitle">Registrar lectura</h2>
         <button class="close" id="closeModal">✕</button>
       </div>
       <div id="modalBody"></div>
     </div>
   </div>
 
-  <div class="toast" id="toast">Apunte guardado.</div>
+  <div class="toast" id="toast">Lectura guardada.</div>
 
 <script>
 (() => {
-  const STORAGE_KEY = "reading_habit_app_v1";
-  const $ = (sel) => document.querySelector(sel);
-  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-  const todayKey = () => new Date().toISOString().slice(0,10);
-  const fmtDate = (iso) => {
-    if(!iso) return "—";
-    const d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString("es-UY", { year:"numeric", month:"short", day:"2-digit" });
+  const STORAGE_KEY = "reading_habit_app_v2";
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const todayKey = () => {
+    const d = new Date();
+    const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+    return local.toISOString().slice(0, 10);
   };
-  const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36);
-  const clamp = (n,min,max) => Math.max(min, Math.min(max, n));
-  const toastEl = $("#toast");
+  const fmtDate = (iso) => {
+    if (!iso) return "—";
+    return new Date(iso + "T00:00:00").toLocaleDateString("es-UY", {
+      year: "numeric", month: "short", day: "2-digit"
+    });
+  };
+  const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+  const escapeHTML = (str) => String(str ?? "").replace(/[&<>"']/g, s => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[s]));
 
   const defaultData = () => ({
     settings: {
       dailyGoal: 10,
       theme: "light",
-      reminder: "on"
+      reminder: "on",
+      lastBookId: "",
+      bookFilter: "all",
+      bookSort: "recent"
     },
     books: [],
     logs: []
   });
 
   let data = load();
-  let currentFilter = "all";
+  let selectedBookId = data.settings.lastBookId || null;
+  let chartTypes = { weeklyChart: "bar", monthlyChart: "bar" };
+  let currentFilter = data.settings.bookFilter || "all";
   let booksSearchQuery = "";
-  let selectedBookId = null;
+  let bookSortMode = data.settings.bookSort || "recent";
+  let noteSortState = {};
+  const toastEl = $("#toast");
 
-  function load(){
-    try{
+  function load() {
+    try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return defaultData();
+      if (!raw) return defaultData();
       const parsed = JSON.parse(raw);
       return {
         settings: { ...defaultData().settings, ...(parsed.settings || {}) },
         books: Array.isArray(parsed.books) ? parsed.books : [],
         logs: Array.isArray(parsed.logs) ? parsed.logs : []
       };
-    }catch(e){
-      console.warn(e);
+    } catch {
       return defaultData();
     }
   }
-  function save(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+  function persist(silent = false) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {
+      console.warn(e);
+      if (!silent) showToast("No se pudo guardar en este navegador.");
+    }
+  }
+
+  function saveAndRender(silent = false) {
+    persist(silent);
     renderAll();
   }
-  function showToast(msg){
+
+  function showToast(msg) {
     toastEl.textContent = msg;
     toastEl.classList.add("show");
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => toastEl.classList.remove("show"), 1800);
   }
 
-  function setTheme(theme){
+  function setTheme(theme) {
     data.settings.theme = theme;
     document.body.setAttribute("data-theme", theme);
     $("#themeBtn").textContent = theme === "dark" ? "☀️" : "🌙";
     $("#themeSelect").value = theme;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "dark" ? "#0b1220" : "#f4f7fb");
+    persist(true);
   }
 
-  function openModal(title, bodyHTML, onMount){
+  function openModal(title, bodyHTML, onMount) {
     $("#modalTitle").textContent = title;
     $("#modalBody").innerHTML = bodyHTML;
     $("#modalBack").classList.add("show");
-    $("#modalBack").setAttribute("aria-hidden","false");
-    onMount && onMount();
+    $("#modalBack").setAttribute("aria-hidden", "false");
+    if (typeof onMount === "function") onMount();
   }
-  function closeModal(){
+  function closeModal() {
     $("#modalBack").classList.remove("show");
-    $("#modalBack").setAttribute("aria-hidden","true");
+    $("#modalBack").setAttribute("aria-hidden", "true");
     $("#modalBody").innerHTML = "";
   }
 
-  function logsSortedDesc(){
-    return [...data.logs].sort((a,b) => b.date.localeCompare(a.date));
+  const getBook = (id) => data.books.find(b => b.id === id);
+  const logsSortedDesc = () => [...data.logs].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const uniqueLogDates = () => [...new Set(data.logs.map(l => l.date))].sort();
+
+  function pagesByBook(bookId) {
+    return data.logs.filter(l => l.bookId === bookId).reduce((a, b) => a + Number(b.pages || 0), 0);
   }
-  function uniqueLogDates(){
-    return [...new Set(data.logs.map(l => l.date))].sort();
+  function logsByBook(bookId) {
+    return data.logs.filter(l => l.bookId === bookId).sort((a, b) => String(b.date).localeCompare(String(a.date)));
   }
-  function todayPages(){
-    return data.logs.filter(l => l.date === todayKey()).reduce((a,b) => a + Number(b.pages || 0), 0);
-  }
-  function pagesByBook(bookId){
-    return data.logs.filter(l => l.bookId === bookId).reduce((a,b) => a + Number(b.pages || 0), 0);
-  }
-  function logsByBook(bookId){
-    return data.logs.filter(l => l.bookId === bookId).slice().sort((a,b) => a.date.localeCompare(b.date));
+  function todayPages() {
+    return data.logs.filter(l => l.date === todayKey()).reduce((a, b) => a + Number(b.pages || 0), 0);
   }
 
-  function dailyTotals(days = 14){
-    const out = [];
-    const base = new Date();
-    for(let i = days - 1; i >= 0; i--){
-      const d = new Date(base);
-      d.setDate(d.getDate() - i);
-      const key = d.toISOString().slice(0,10);
-      const value = data.logs.filter(l => l.date === key).reduce((a,b) => a + Number(b.pages || 0), 0);
-      out.push({
-        key,
-        label: d.toLocaleDateString("es-UY", { month:"short", day:"2-digit" }),
-        value
-      });
-    }
-    return out;
-  }
-
-  function sortedNotes(notes){
-    const mode = data.settings.noteSort || "created-desc";
-    return [...(notes || [])].sort((a, b) => {
-      const aTitle = String(a.title || "").toLowerCase();
-      const bTitle = String(b.title || "").toLowerCase();
-      const aTime = new Date(a.createdAt || 0).getTime();
-      const bTime = new Date(b.createdAt || 0).getTime();
-      switch(mode){
-        case "created-asc": return aTime - bTime;
-        case "title-asc": return aTitle.localeCompare(bTitle, "es");
-        case "title-desc": return bTitle.localeCompare(aTitle, "es");
-        case "created-desc":
-        default: return bTime - aTime;
-      }
-    });
-  }
-
-  function bookInterestingFacts(book){
-    const stats = calcBookStats(book);
+  function calcBookStats(book) {
     const logs = logsByBook(book.id);
-    const firstLog = logs[0];
-    const lastLog = logs.at(-1);
-    const biggestSession = logs.reduce((best, cur) => {
-      if(!best || Number(cur.pages || 0) > Number(best.pages || 0)) return cur;
-      return best;
-    }, null);
-    const avgSession = stats.readDays ? stats.totalRead / stats.readDays : 0;
-    return [
-      `${Math.round(stats.progress)}% completado · ${stats.totalRead} páginas leídas.`,
-      stats.estDaysLeft ? `A este ritmo, te quedarían aprox. ${stats.estDaysLeft} días para terminarlo.` : "Ya superaste la meta de avance de este libro o no hay suficiente lectura para estimarla.",
-      biggestSession ? `Tu sesión más larga en este libro fue de ${biggestSession.pages} páginas.` : "Todavía no registraste sesiones en este libro.",
-      firstLog ? `Empezaste a registrar este libro el ${fmtDate(firstLog.date)}.` : "Aún no hay registros para este libro.",
-      lastLog ? `La última lectura registrada fue el ${fmtDate(lastLog.date)}.` : "No hay última lectura registrada aún.",
-      `Promedio por sesión en este libro: ${avgSession ? avgSession.toFixed(1) : "0.0"} páginas.`
-    ];
-  }
-
-  function generalInterestingFacts(){
-    const g = calcGlobalStats();
-    const logs = logsSortedDesc();
-    const biggestDay = (() => {
-      const map = new Map();
-      for(const log of data.logs){
-        map.set(log.date, (map.get(log.date) || 0) + Number(log.pages || 0));
-      }
-      let winner = null;
-      for(const [date, pages] of map.entries()){
-        if(!winner || pages > winner.pages) winner = { date, pages };
-      }
-      return winner;
-    })();
-    const topBook = g.topBook ? getBook(g.topBook.id) : null;
-    return [
-      `Tenés ${g.totalPages} páginas leídas registradas en total.`,
-      `Tu promedio por día activo es de ${g.avgDaily.toFixed(1)} páginas.`,
-      biggestDay ? `Tu día más lector fue ${fmtDate(biggestDay.date)} con ${biggestDay.pages} páginas.` : "Todavía no hay un día destacado.",
-      topBook ? `Tu libro más avanzado es "${topBook.title}".` : "Aún no hay libros suficientes para destacar uno.",
-      logs.at(0) ? `La última lectura registrada fue el ${fmtDate(logs.at(0).date)}.` : "Todavía no registraste lecturas.",
-      `${g.notesTotal} apuntes creados en ${g.booksWithNotes} libros.`
-    ];
-  }
-  function calcBookStats(book){
-    const logs = logsByBook(book.id);
-    const totalRead = logs.reduce((a,b)=>a + Number(b.pages || 0), 0);
+    const totalRead = logs.reduce((a, b) => a + Number(b.pages || 0), 0);
     const start = book.startDate ? new Date(book.startDate + "T00:00:00") : null;
     const finish = book.finishDate ? new Date(book.finishDate + "T00:00:00") : null;
-    const last = logs.at(-1)?.date || null;
-    const durationDays = start ? Math.max(1, Math.round((((finish || new Date(todayKey()+"T00:00:00")) - start) / 86400000) + 1)) : 0;
+    const durationDays = start ? Math.max(1, Math.round(((finish || new Date(todayKey() + "T00:00:00")) - start) / 86400000) + 1) : 0;
     const readDays = new Set(logs.map(l => l.date)).size;
-    const avgPerDay = readDays ? (totalRead / readDays) : 0;
-    const avgPerCalendarDay = durationDays ? (totalRead / durationDays) : 0;
+    const avgPerDay = readDays ? totalRead / readDays : 0;
+    const avgPerCalendarDay = durationDays ? totalRead / durationDays : 0;
     const progress = book.totalPages ? clamp((totalRead / book.totalPages) * 100, 0, 100) : 0;
-    const estDaysLeft = (book.totalPages && avgPerDay && totalRead < book.totalPages) ? Math.ceil((book.totalPages - totalRead) / avgPerDay) : 0;
-    return { totalRead, start, finish, durationDays, readDays, avgPerDay, avgPerCalendarDay, progress, estDaysLeft, last };
+    const estDaysLeft = (book.totalPages && avgPerDay && totalRead < book.totalPages)
+      ? Math.ceil((book.totalPages - totalRead) / avgPerDay)
+      : 0;
+    return { totalRead, start, finish, durationDays, readDays, avgPerDay, avgPerCalendarDay, progress, estDaysLeft };
   }
 
-  function calcGlobalStats(){
+  function calcGlobalStats() {
     const books = data.books;
-    const totalPages = data.logs.reduce((a,b) => a + Number(b.pages || 0), 0);
+    const totalPages = data.logs.reduce((a, b) => a + Number(b.pages || 0), 0);
     const readDays = uniqueLogDates().length;
     const avgDaily = readDays ? totalPages / readDays : 0;
     const completed = books.filter(b => b.status === "done").length;
-    const inProgress = books.filter(b => b.status !== "done").length;
-    const notesTotal = books.reduce((acc, book) => acc + (Array.isArray(book.notes) ? book.notes.length : 0), 0);
+    const archived = books.filter(b => b.archived).length;
+    const active = books.filter(b => !b.archived && b.status !== "done").length;
+    const notesTotal = books.reduce((acc, b) => acc + (Array.isArray(b.notes) ? b.notes.length : 0), 0);
     const booksWithNotes = books.filter(b => Array.isArray(b.notes) && b.notes.length).length;
     let topBook = null;
-    for(const book of books){
-      const stats = calcBookStats(book);
-      if(!topBook || stats.progress > topBook.progress){
-        topBook = { id: book.id, title: book.title, progress: stats.progress };
-      }
+    for (const book of books) {
+      const s = calcBookStats(book);
+      if (!topBook || s.progress > topBook.progress) topBook = { id: book.id, title: book.title, progress: s.progress };
     }
-    return { totalPages, readDays, avgDaily, completed, inProgress, totalBooks: books.length, notesTotal, booksWithNotes, topBook };
+    return { totalPages, readDays, avgDaily, completed, archived, active, totalBooks: books.length, notesTotal, booksWithNotes, topBook };
   }
 
-  function renderBarChart(container, series){
-    if(!container) return;
-    const max = Math.max(1, ...series.map(s => Number(s.value || 0)));
-    container.innerHTML = series.map(item => {
-      const value = Number(item.value || 0);
-      const height = value > 0 ? Math.max(8, (value / max) * 100) : 8;
-      return `
-        <div class="chartBar" title="${escapeHTML(item.label)} · ${value} páginas">
-          <div class="chartBarTrack">
-            <div class="chartBarFill" style="height:${height}%"></div>
-          </div>
-          <div class="chartBarValue">${value}</div>
-          <div class="chartBarLabel">${escapeHTML(item.short || item.label)}</div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  function renderLineChart(container, series){
-    if(!container) return;
-    const width = 100;
-    const height = 180;
-    const max = Math.max(1, ...series.map(s => Number(s.value || 0)));
-    const step = series.length > 1 ? width / (series.length - 1) : width;
-    const points = series.map((item, i) => {
-      const x = i * step;
-      const y = height - ((Number(item.value || 0) / max) * (height - 24) + 12);
-      return { ...item, x, y };
-    });
-    const polyline = points.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
-    container.innerHTML = `
-      <svg viewBox="0 0 ${width} ${height}" class="chartSvg" preserveAspectRatio="none" aria-label="Gráfico de líneas">
-        <path d="M 0 ${height-12} L ${polyline.replaceAll(" ", " L ")} L ${width} ${height-12}" class="chartAreaPath"></path>
-        <polyline points="${polyline}" class="chartLinePath"></polyline>
-        ${points.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2.8" class="chartPoint"></circle>`).join("")}
-      </svg>
-      <div class="chartAxisLabels">
-        ${points.map(p => `<span>${escapeHTML(p.label)}</span>`).join("")}
-      </div>
-      <div class="chartLineLegend">
-        ${points.map(p => `<div><strong>${p.value}</strong><span>${escapeHTML(p.label)}</span></div>`).join("")}
-      </div>
-    `;
-  }
-
-  function renderPieChart(container, slices){
-    if(!container) return;
-    const total = slices.reduce((a,b) => a + Math.max(0, Number(b.value || 0)), 0);
-    const radius = 42;
-    const circumference = 2 * Math.PI * radius;
-    let offset = 0;
-    const safeTotal = total || 1;
-    const colors = ["var(--accent)", "var(--accent2)", "var(--warn)", "var(--danger)"];
-    const circles = slices.map((slice, i) => {
-      const value = Math.max(0, Number(slice.value || 0));
-      const dash = (value / safeTotal) * circumference;
-      const c = colors[i % colors.length];
-      const out = `
-        <circle
-          r="${radius}" cx="50" cy="50"
-          fill="transparent"
-          style="stroke:${c}"
-          stroke-width="16"
-          stroke-dasharray="${dash} ${circumference - dash}"
-          stroke-dashoffset="${-offset}"
-          transform="rotate(-90 50 50)"
-        ></circle>`;
-      offset += dash;
-      return out;
-    }).join("");
-    container.innerHTML = `
-      <div class="pieWrap">
-        <svg viewBox="0 0 100 100" class="pieSvg" aria-label="Gráfico circular">
-          <circle r="${radius}" cx="50" cy="50" fill="transparent" style="stroke:color-mix(in srgb, var(--line) 60%, transparent)" stroke-width="16"></circle>
-          ${circles}
-        </svg>
-        <div class="pieCenter">
-          <div class="pieValue">${total}</div>
-          <div class="pieLabel">libros</div>
-        </div>
-      </div>
-      <div class="pieLegend">
-        ${slices.map((slice, i) => `<div><span class="pieSwatch" style="background:${colors[i % colors.length]}"></span><span>${escapeHTML(slice.label)}</span><strong>${slice.value}</strong></div>`).join("")}
-      </div>
-    `;
-  }
-
-  function lastNDaysPages(days){
-    const out = [];
-    const base = new Date();
-    for(let i = days - 1; i >= 0; i--){
-      const d = new Date(base);
-      d.setDate(d.getDate() - i);
-      const key = d.toISOString().slice(0,10);
-      const value = data.logs.filter(l => l.date === key).reduce((a,b) => a + Number(b.pages || 0), 0);
-      out.push({
-        key,
-        label: d.toLocaleDateString("es-UY", { weekday:"short", day:"2-digit" }),
-        short: d.toLocaleDateString("es-UY", { weekday:"narrow" }),
-        value
-      });
-    }
-    return out;
-  }
-
-  function lastNWeeksPages(weeks){
-    const out = [];
-    const base = new Date();
-    for(let i = weeks - 1; i >= 0; i--){
-      const start = new Date(base);
-      start.setDate(start.getDate() - ((i + 1) * 7) + 1);
-      const end = new Date(base);
-      end.setDate(end.getDate() - (i * 7));
-      const startKey = start.toISOString().slice(0,10);
-      const endKey = end.toISOString().slice(0,10);
-      let value = 0;
-      for(const log of data.logs){
-        if(log.date >= startKey && log.date <= endKey){
-          value += Number(log.pages || 0);
-        }
-      }
-      out.push({
-        label: `${start.toLocaleDateString("es-UY", { day:"2-digit", month:"short" })} - ${end.toLocaleDateString("es-UY", { day:"2-digit", month:"short" })}`,
-        short: `S${weeks - i}`,
-        value
-      });
-    }
-    return out;
-  }
-
-
-  function calcStreak(){
+  function calcStreak() {
     const dates = uniqueLogDates();
-    if(!dates.length) return { current:0, best:0, last:null };
-    const set = new Set(dates);
-    const best = (() => {
-      let max = 1, current = 1;
-      for(let i=1;i<dates.length;i++){
-        const prev = new Date(dates[i-1] + "T00:00:00");
-        const cur = new Date(dates[i] + "T00:00:00");
-        const diff = (cur - prev) / 86400000;
-        if(diff === 1){ current++; max = Math.max(max, current); } else { current = 1; }
+    if (!dates.length) return { current: 0, best: 0, last: null };
+    let best = 1, cur = 1;
+    for (let i = 1; i < dates.length; i++) {
+      const diff = (new Date(dates[i] + "T00:00:00") - new Date(dates[i - 1] + "T00:00:00")) / 86400000;
+      if (diff === 1) {
+        cur++;
+        best = Math.max(best, cur);
+      } else {
+        cur = 1;
       }
-      return max;
-    })();
-
+    }
     let current = 0;
     let cursor = new Date(todayKey() + "T00:00:00");
-    while(set.has(cursor.toISOString().slice(0,10))){
+    const set = new Set(dates);
+    while (set.has(cursor.toISOString().slice(0, 10))) {
       current++;
       cursor.setDate(cursor.getDate() - 1);
     }
     return { current, best, last: dates.at(-1) };
   }
-  function getBook(id){ return data.books.find(b => b.id === id); }
 
-  function ensureTheme(){
-    setTheme(data.settings.theme || "light");
+  function lastNDaysPages(n) {
+    const out = [];
+    const base = new Date();
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date(base);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const value = data.logs.filter(l => l.date === key).reduce((a, b) => a + Number(b.pages || 0), 0);
+      out.push({
+        key,
+        label: d.toLocaleDateString("es-UY", { weekday: "short", day: "2-digit" }),
+        short: d.toLocaleDateString("es-UY", { weekday: "narrow" }),
+        value
+      });
+    }
+    return out;
   }
 
-  function renderAll(){
-    ensureTheme();
+  function lastNWeeksPages(n) {
+    const out = [];
+    const base = new Date();
+    for (let i = n - 1; i >= 0; i--) {
+      const start = new Date(base);
+      start.setDate(start.getDate() - ((i + 1) * 7) + 1);
+      const end = new Date(base);
+      end.setDate(end.getDate() - (i * 7));
+      const startKey = start.toISOString().slice(0, 10);
+      const endKey = end.toISOString().slice(0, 10);
+      let value = 0;
+      for (const log of data.logs) if (log.date >= startKey && log.date <= endKey) value += Number(log.pages || 0);
+      out.push({
+        label: `${start.toLocaleDateString("es-UY", { day: "2-digit", month: "short" })} - ${end.toLocaleDateString("es-UY", { day: "2-digit", month: "short" })}`,
+        short: `S${n - i}`,
+        value
+      });
+    }
+    return out;
+  }
+
+  const DONUT_COLORS = ["var(--accent)", "var(--accent2)", "var(--warn)", "var(--purple)", "var(--danger)", "#06b6d4", "#ec4899", "#84cc16"];
+
+  function renderBarChart(container, series) {
+    if (!container) return;
+    const max = Math.max(1, ...series.map(s => Number(s.value || 0)));
+    container.innerHTML = series.map(item => {
+      const value = Number(item.value || 0);
+      const height = value > 0 ? Math.max(8, (value / max) * 100) : 8;
+      return `<div class="chartBar" title="${escapeHTML(item.label)} · ${value} páginas">
+        <div class="chartBarTrack"><div class="chartBarFill" style="height:${height}%"></div></div>
+        <div class="chartBarValue">${value}</div>
+        <div class="chartBarLabel">${escapeHTML(item.short || item.label)}</div>
+      </div>`;
+    }).join("");
+  }
+
+  function renderLineChart(container, series) {
+    if (!container) return;
+    const W = 300, H = 140, PAD = 28;
+    const values = series.map(s => Number(s.value || 0));
+    const max = Math.max(1, ...values);
+    const n = series.length;
+    const pts = values.map((v, i) => {
+      const x = PAD + ((W - PAD * 2) / (n - 1 || 1)) * i;
+      const y = PAD + (H - PAD * 2) * (1 - v / max);
+      return { x, y, v };
+    });
+    const polyline = pts.map(p => `${p.x},${p.y}`).join(" ");
+    const area = `${pts[0].x},${H - PAD} ` + pts.map(p => `${p.x},${p.y}`).join(" ") + ` ${pts[pts.length - 1].x},${H - PAD}`;
+    const circles = pts.map((p, i) => `
+      <circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="2">
+        <title>${escapeHTML(series[i].label)}: ${p.v}</title>
+      </circle>`).join("");
+    const labels = series.map((s, i) => `<text x="${pts[i].x}" y="${H}" text-anchor="middle" font-size="10" fill="var(--muted)">${escapeHTML(s.short || s.label)}</text>`).join("");
+    container.className = "lineChartWrap";
+    container.innerHTML = `<svg viewBox="0 0 ${W} ${H + 10}" style="overflow:visible">
+      <defs>
+        <linearGradient id="lg${container.id}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity=".25"/>
+          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <polygon points="${area}" fill="url(#lg${container.id})"></polygon>
+      <polyline points="${polyline}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+      ${circles}
+      ${labels}
+    </svg>`;
+  }
+
+  function renderDonutChart(container, series) {
+    if (!container) return;
+    const total = series.reduce((a, s) => a + s.value, 0);
+    if (!total) {
+      container.innerHTML = `<div class="empty">Sin datos.</div>`;
+      return;
+    }
+    const R = 54, r = 32, cx = 70, cy = 70;
+    let currentAngle = -Math.PI / 2;
+    const slices = series.map((s, i) => {
+      if (!s.value) return "";
+      const angle = (s.value / total) * Math.PI * 2;
+      const x1 = cx + R * Math.cos(currentAngle), y1 = cy + R * Math.sin(currentAngle);
+      const x2 = cx + R * Math.cos(currentAngle + angle), y2 = cy + R * Math.sin(currentAngle + angle);
+      const xi1 = cx + r * Math.cos(currentAngle), yi1 = cy + r * Math.sin(currentAngle);
+      const xi2 = cx + r * Math.cos(currentAngle + angle), yi2 = cy + r * Math.sin(currentAngle + angle);
+      const large = angle > Math.PI ? 1 : 0;
+      const d = `M${x1},${y1} A${R},${R} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${r},${r} 0 ${large},0 ${xi1},${yi1} Z`;
+      currentAngle += angle;
+      const color = DONUT_COLORS[i % DONUT_COLORS.length];
+      return `<path d="${d}" fill="${color}" opacity=".92"><title>${escapeHTML(s.label)}: ${s.value}</title></path>`;
+    });
+    const legend = series.filter(s => s.value > 0).map((s, i) => {
+      const pct = ((s.value / total) * 100).toFixed(0);
+      return `<div class="donutItem"><div class="donutDot" style="background:${DONUT_COLORS[i % DONUT_COLORS.length]}"></div>
+        <span>${escapeHTML(s.label)} <strong>${pct}%</strong></span></div>`;
+    }).join("");
+    container.innerHTML = `<div class="donutWrap">
+      <svg class="donutSvg" width="140" height="140" viewBox="0 0 140 140">
+        ${slices.join("")}
+        <text x="70" y="66" text-anchor="middle" font-size="11" fill="var(--muted)">Total</text>
+        <text x="70" y="82" text-anchor="middle" font-size="17" font-weight="800" fill="var(--text)">${total}</text>
+      </svg>
+      <div class="donutLegend">${legend}</div>
+    </div>`;
+  }
+
+  function buildFacts() {
+    const g = calcGlobalStats();
+    const streak = calcStreak();
+    const facts = [];
+    const days7 = lastNDaysPages(7);
+    const total7 = days7.reduce((a, b) => a + b.value, 0);
+    const bestDay7 = days7.reduce((a, b) => (b.value > a.value ? b : a), days7[0]);
+
+    if (g.totalPages > 0) {
+      const wordsPerPage = 250;
+      const totalWords = g.totalPages * wordsPerPage;
+      if (totalWords > 10000) facts.push({
+        icon: "📖",
+        text: `Llevás ${totalWords.toLocaleString("es")} palabras leídas estimadas.`,
+        meta: "Estimado a 250 palabras por página."
+      });
+
+      const reading = data.books.filter(b => !b.archived && b.status !== "done");
+      if (reading.length > 0 && g.avgDaily > 0) {
+        const book = reading[0];
+        const s = calcBookStats(book);
+        const remaining = book.totalPages - s.totalRead;
+        if (remaining > 0) {
+          const daysLeft = Math.ceil(remaining / g.avgDaily);
+          const finDate = new Date();
+          finDate.setDate(finDate.getDate() + daysLeft);
+          facts.push({
+            icon: "🎯",
+            text: `A tu ritmo actual terminás "${escapeHTML(book.title)}" en ~${daysLeft} días.`,
+            meta: `Promedio: ${g.avgDaily.toFixed(1)} pág/día · aprox. ${finDate.toLocaleDateString("es-UY", { day: "2-digit", month: "short" })}`
+          });
+        }
+      }
+
+      if (streak.current >= 3) facts.push({
+        icon: "🔥",
+        text: `¡Racha de ${streak.current} días! Tu mejor racha histórica es ${streak.best}.`,
+        meta: "Seguí así para superarla."
+      });
+      else if (streak.best >= 7) facts.push({
+        icon: "🏆",
+        text: `Tu mejor racha fue de ${streak.best} días seguidos.`,
+        meta: "Leé aunque sea una página por día."
+      });
+
+      if (g.readDays >= 7) {
+        const dayTotals = Array(7).fill(0);
+        for (const log of data.logs) {
+          const d = new Date(log.date + "T00:00:00").getDay();
+          dayTotals[d] += Number(log.pages || 0);
+        }
+        const names = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+        const bestDayIdx = dayTotals.indexOf(Math.max(...dayTotals));
+        facts.push({
+          icon: "📅",
+          text: `${names[bestDayIdx]} es tu día más productivo.`,
+          meta: `Con ${dayTotals[bestDayIdx]} páginas acumuladas.`
+        });
+      }
+
+      if (total7 > 0) {
+        const prevWeek = lastNWeeksPages(2)[0].value;
+        if (prevWeek > 0) {
+          const delta = total7 - prevWeek;
+          const sign = delta >= 0 ? "más" : "menos";
+          facts.push({
+            icon: "📊",
+            text: `Esta semana leíste ${Math.abs(delta)} páginas ${sign} que la anterior.`,
+            meta: `Esta semana: ${total7} · Semana previa: ${prevWeek}`
+          });
+        }
+      }
+
+      if (bestDay7 && bestDay7.value > 0) facts.push({
+        icon: "⚡",
+        text: `Tu mejor día reciente fue ${bestDay7.label} con ${bestDay7.value} páginas.`,
+        meta: "¡Eso es constancia!"
+      });
+
+      if (g.completed > 0) facts.push({
+        icon: "✅",
+        text: `Terminaste ${g.completed} libro${g.completed > 1 ? "s" : ""}.`,
+        meta: `Promedio: ${g.avgDaily.toFixed(1)} pág/día sobre días activos.`
+      });
+
+      if (g.notesTotal > 0) facts.push({
+        icon: "✏️",
+        text: `Tenés ${g.notesTotal} apunte${g.notesTotal > 1 ? "s" : ""} en ${g.booksWithNotes} libro${g.booksWithNotes > 1 ? "s" : ""}.`,
+        meta: "Los apuntes ayudan a recordar y conectar ideas."
+      });
+    }
+
+    if (g.topBook && g.topBook.progress > 0) facts.push({
+      icon: "🚀",
+      text: `Tu libro más avanzado es "${escapeHTML(g.topBook.title)}" con ${Math.round(g.topBook.progress)}% completado.`,
+      meta: "Ya estás cerca de terminarlo."
+    });
+
+    return facts;
+  }
+
+  function renderFacts() {
+    const el = $("#factsGrid");
+    const facts = buildFacts();
+    if (!facts.length) {
+      el.innerHTML = `<div class="empty">Registrá lecturas para ver datos interesantes.</div>`;
+      return;
+    }
+    el.innerHTML = facts.map(f => `
+      <div class="factCard">
+        <div class="factIcon">${f.icon}</div>
+        <div class="factText">${f.text}</div>
+        <div class="factMeta">${f.meta}</div>
+      </div>`).join("");
+  }
+
+  function renderFeaturedBook() {
+    const el = $("#featuredBookBox");
+    const no = $("#noFeaturedBook");
+    const activeBooks = data.books.filter(b => !b.archived && b.status !== "done").sort((a, b) => pagesByBook(b.id) - pagesByBook(a.id));
+    if (!activeBooks.length) {
+      el.innerHTML = "";
+      no.classList.remove("hidden");
+      return;
+    }
+    no.classList.add("hidden");
+    const book = activeBooks[0];
+    const s = calcBookStats(book);
+    const remaining = Math.max(0, book.totalPages - s.totalRead);
+    el.innerHTML = `<div class="bookListItem" style="box-shadow:none">
+      <div class="listTop">
+        <div>
+          <h3>${escapeHTML(book.title)}</h3>
+          <div class="bookMeta">${escapeHTML(book.author || "Sin autor")} · ${book.totalPages || 0} páginas</div>
+        </div>
+        <span class="chip muted">Activo</span>
+      </div>
+      <div class="progressWrap">
+        <div class="row">
+          <div class="mini">${s.totalRead} leídas · faltan ${remaining}</div>
+          <div class="mini">${Math.round(s.progress)}%</div>
+        </div>
+        <div class="progressBar"><div style="width:${s.progress}%"></div></div>
+      </div>
+      <div class="inlineActions">
+        <button class="btn small" data-action="open-book" data-book-id="${book.id}">Abrir</button>
+        <button class="btn small secondary" data-action="log-book" data-book-id="${book.id}">Registrar</button>
+      </div>
+    </div>`;
+  }
+
+  function sortBooks(books) {
+    switch (bookSortMode) {
+      case "alpha": return [...books].sort((a, b) => (a.title || "").localeCompare(b.title || "", "es"));
+      case "progress": return [...books].sort((a, b) => calcBookStats(b).progress - calcBookStats(a).progress);
+      case "pages": return [...books].sort((a, b) => (b.totalPages || 0) - (a.totalPages || 0));
+      case "notes": return [...books].sort((a, b) => (b.notes || []).length - (a.notes || []).length);
+      default: return [...books]; // insertion order
+    }
+  }
+
+  function bookItemHTML(book) {
+    const s = calcBookStats(book);
+    const statusLabel = book.archived ? "Archivado" : (book.status === "done" ? "Terminado" : "Leyendo");
+    return `<div class="bookListItem">
+      <div class="listTop">
+        <div>
+          <h3>${escapeHTML(book.title)}</h3>
+          <div class="bookMeta">${escapeHTML(book.author || "Sin autor")} · Inicio: ${fmtDate(book.startDate)}${book.finishDate ? " · Fin: " + fmtDate(book.finishDate) : ""}</div>
+        </div>
+        <span class="chip ${book.status === "done" ? "done" : "muted"}">${statusLabel}</span>
+      </div>
+      <div class="progressWrap">
+        <div class="row">
+          <div class="mini">${s.totalRead} / ${book.totalPages || 0} páginas</div>
+          <div class="mini">${Math.round(s.progress)}%</div>
+        </div>
+        <div class="progressBar"><div style="width:${s.progress}%"></div></div>
+      </div>
+      <div class="mini">Promedio: ${s.avgPerDay ? s.avgPerDay.toFixed(1) : "0.0"} pág/día · Días activos: ${s.readDays} · Apuntes: ${(book.notes || []).length}</div>
+      <div class="inlineActions">
+        <button class="btn small" data-action="open-book" data-book-id="${book.id}">Ver detalles</button>
+        <button class="btn small secondary" data-action="log-book" data-book-id="${book.id}">Registrar páginas</button>
+        <button class="btn small secondary" data-action="toggle-done" data-book-id="${book.id}">${book.status === "done" ? "Reabrir" : "Terminar"}</button>
+        <button class="btn small secondary" data-action="toggle-archive" data-book-id="${book.id}">${book.archived ? "Desarchivar" : "Archivar"}</button>
+      </div>
+    </div>`;
+  }
+
+  function renderBooks() {
+    const query = booksSearchQuery.trim().toLowerCase();
+    let books = data.books.filter(b => {
+      if (currentFilter === "reading" && (b.status === "done" || b.archived)) return false;
+      if (currentFilter === "done" && b.status !== "done") return false;
+      if (currentFilter === "archived" && !b.archived) return false;
+      if (query) {
+        const h = `${b.title || ""} ${b.author || ""}`.toLowerCase();
+        if (!h.includes(query)) return false;
+      }
+      return true;
+    });
+    books = sortBooks(books);
+    $("#noBooks").classList.toggle("hidden", data.books.length !== 0);
+    $("#booksList").innerHTML = books.map(bookItemHTML).join("") || `<div class="empty">No se encontraron libros con ese filtro.</div>`;
+    $$(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === currentFilter));
+    $$(".sortBtn").forEach(btn => btn.classList.toggle("active", btn.dataset.sort === bookSortMode));
+    $("#bookSearchInput").value = booksSearchQuery;
+  }
+
+  function renderStats() {
+    const g = calcGlobalStats();
+    const streak = calcStreak();
+    const days7 = lastNDaysPages(7);
+    const weeks4 = lastNWeeksPages(4);
+    const total7 = days7.reduce((a, b) => a + b.value, 0);
+    const total28 = weeks4.reduce((a, b) => a + b.value, 0);
+
+    const cards = [
+      { label: "Páginas totales", value: g.totalPages, meta: "Todas tus lecturas registradas" },
+      { label: "Libros totales", value: g.totalBooks, meta: `${g.completed} terminados · ${g.active} activos` },
+      { label: "Días activos", value: g.readDays, meta: "Días distintos con lectura" },
+      { label: "Promedio diario", value: g.avgDaily.toFixed(1), meta: "Sobre días activos" },
+      { label: "Apuntes", value: g.notesTotal, meta: `${g.booksWithNotes} libros con apuntes` },
+      { label: "Racha actual", value: streak.current, meta: `Mejor racha: ${streak.best} días` }
+    ];
+    $("#globalStats").innerHTML = cards.map(c => `
+      <div class="metric">
+        <div class="name">${escapeHTML(c.label)}</div>
+        <div class="num">${escapeHTML(String(c.value))}</div>
+        <div class="meta">${escapeHTML(c.meta)}</div>
+      </div>`).join("");
+
+    const wContainer = $("#weeklyChart");
+    if (chartTypes.weeklyChart === "bar") {
+      wContainer.className = "chartBars week";
+      renderBarChart(wContainer, days7);
+    } else {
+      renderLineChart(wContainer, days7);
+    }
+
+    const mContainer = $("#monthlyChart");
+    if (chartTypes.monthlyChart === "bar") {
+      mContainer.className = "chartBars month";
+      renderBarChart(mContainer, weeks4);
+    } else if (chartTypes.monthlyChart === "line") {
+      renderLineChart(mContainer, weeks4);
+    } else {
+      mContainer.className = "";
+      renderDonutChart(mContainer, weeks4.map(w => ({ label: w.short, value: w.value })));
+    }
+
+    const booksSeries = data.books
+      .map(b => ({ label: b.title, value: pagesByBook(b.id) }))
+      .filter(s => s.value > 0);
+    renderDonutChart($("#booksDonutChart"), booksSeries);
+
+    $("#weekTotalChip").textContent = `${total7} pág.`;
+    $("#monthTotalChip").textContent = `${total28} pág.`;
+
+    $$(".chartTypeBtn").forEach(btn => {
+      btn.classList.toggle("active", chartTypes[btn.dataset.chart] === btn.dataset.type);
+    });
+
+    const tips = [];
+    if (streak.current === 0) tips.push("Leé aunque sea 5 minutos para arrancar la racha.");
+    if (g.totalBooks === 0) tips.push("Creá un libro para empezar a medir tu progreso.");
+    if (g.avgDaily < (data.settings.dailyGoal || 10)) tips.push("Tu promedio está por debajo de la meta: hacé sesiones pequeñas y constantes.");
+    if (data.books.some(b => !b.notes || !b.notes.length)) tips.push("Usá apuntes para capturar ideas mientras leés.");
+    if (g.topBook && g.topBook.progress > 0) tips.push(`Tu libro más avanzado es "${g.topBook.title}" con ${Math.round(g.topBook.progress)}%.`);
+    if (!tips.length) tips.push("Vas muy bien: seguí registrando lectura todos los días.");
+    $("#tipsList").innerHTML = tips.map(t => `<div class="logItem">${escapeHTML(t)}</div>`).join("");
+
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    const el = $("#calendarGrid");
+    const base = new Date();
+    const days = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(base);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const value = data.logs.filter(l => l.date === key).reduce((a, b) => a + Number(b.pages || 0), 0);
+      days.push({ key, day: d.getDate(), value, today: key === todayKey() });
+    }
+    el.innerHTML = days.map(d => `
+      <div class="dayCell ${d.value > 0 ? "active" : ""} ${d.today ? "today" : ""}">
+        <div class="d">${d.day}</div>
+        <div class="v">${d.value > 0 ? d.value : "·"}</div>
+      </div>`).join("");
+  }
+
+  function renderHome() {
+    const streak = calcStreak();
+    const goal = Number(data.settings.dailyGoal || 10);
+    const pages = todayPages();
+    $("#streakCurrent").textContent = streak.current;
+    $("#streakBest").textContent = streak.best;
+    $("#pagesToday").textContent = pages;
+    $("#booksTotal").textContent = data.books.length;
+    $("#goalText").textContent = `Meta diaria: ${goal} páginas`;
+    $("#goalProgressText").textContent = `${pages} / ${goal} páginas`;
+    $("#goalFill").style.width = `${clamp((pages / goal) * 100, 0, 100)}%`;
+    $("#streakHint").textContent = streak.current > 0 ? "¡Buen trabajo, seguí así!" : "Empezá hoy para construir una racha.";
+
+    const reminderText = pages > 0
+      ? "Ya registraste lectura hoy. Podés sumar otra sesión corta."
+      : "Todavía no registraste lectura hoy. Hacelo en segundos.";
+    $("#homeReminderText").textContent = reminderText;
+    if (data.settings.reminder === "on" && pages === 0) {
+      $("#homeStatusPill").textContent = "Pendiente";
+      $("#homeStatusPill").className = "pill yellow";
+    } else if (pages >= goal) {
+      $("#homeStatusPill").textContent = "Meta cumplida";
+      $("#homeStatusPill").className = "pill green";
+    } else {
+      $("#homeStatusPill").textContent = "Listo";
+      $("#homeStatusPill").className = "pill";
+    }
+
+    renderFeaturedBook();
+    renderFacts();
+  }
+
+  function renderSettings() {
+    $("#dailyGoalInput").value = data.settings.dailyGoal || 10;
+    $("#themeSelect").value = data.settings.theme || "light";
+    $("#reminderSelect").value = data.settings.reminder || "on";
+  }
+
+  function renderAll() {
+    setTheme(data.settings.theme || "light");
     renderHome();
     renderBooks();
     renderStats();
     renderSettings();
   }
 
-  function renderHome(){
-    const streak = calcStreak();
-    const goal = Number(data.settings.dailyGoal || 10);
-    const pages = todayPages();
-    const booksTotal = data.books.length;
-    $("#streakCurrent").textContent = streak.current;
-    $("#streakBest").textContent = streak.best;
-    $("#pagesToday").textContent = pages;
-    $("#booksTotal").textContent = booksTotal;
-    $("#goalText").textContent = `Meta diaria: ${goal} páginas`;
-    $("#goalProgressText").textContent = `${pages} / ${goal} páginas`;
-    $("#goalFill").style.width = `${clamp((pages / goal) * 100, 0, 100)}%`;
-    $("#streakHint").textContent = streak.current > 0 ? "¡Buen trabajo, seguí así!" : "Empezá hoy para construir una racha.";
-    const activeBooks = data.books.filter(b => b.status !== "done").sort((a,b)=> (pagesByBook(b.id) - pagesByBook(a.id)));
-    const activeEl = $("#activeBooksList");
-    const noActive = $("#noActiveBooks");
-    if(!activeBooks.length){
-      activeEl.innerHTML = "";
-      noActive.style.display = "block";
-    }else{
-      noActive.style.display = "none";
-      activeEl.innerHTML = activeBooks.slice(0,4).map(bookCardHTML).join("");
-    }
-
-    const insights = [...generalInterestingFacts(), ...data.books.slice(0,3).flatMap(book => bookInterestingFacts(book).slice(0,2))].slice(0,8);
-    const insightsEl = $("#insightsList");
-    if(!insights.length){
-      insightsEl.innerHTML = "";
-      $("#noInsights").style.display = "block";
-    } else {
-      $("#noInsights").style.display = "none";
-      insightsEl.innerHTML = insights.map(item => `<div class="logItem">${escapeHTML(item)}</div>`).join("");
+  function getNoteSort(bookId) {
+    return noteSortState[bookId] || "date-desc";
+  }
+  function setNoteSort(bookId, mode) {
+    noteSortState[bookId] = mode;
+  }
+  function sortedNotes(notes, mode) {
+    const arr = [...notes];
+    switch (mode) {
+      case "date-asc": return arr.sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+      case "alpha": return arr.sort((a, b) => (a.title || "").localeCompare(b.title || "", "es"));
+      case "alpha-desc": return arr.sort((a, b) => (b.title || "").localeCompare(a.title || "", "es"));
+      default: return arr.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
     }
   }
 
-  function bookCardHTML(book){
-    const stats = calcBookStats(book);
-    const status = book.status === "done" ? "done" : "muted";
-    return `
-      <div class="bookListItem">
-        <div class="listTop">
-          <div>
-            <h3>${escapeHTML(book.title)}</h3>
-            <div class="bookMeta">${escapeHTML(book.author || "Sin autor")} · ${book.totalPages || 0} páginas</div>
-          </div>
-          <span class="chip ${status}">${book.status === "done" ? "Terminado" : "Leyendo"}</span>
-        </div>
-        <div class="progressWrap">
-          <div class="row">
-            <div class="mini">${stats.totalRead} leídas</div>
-            <div class="mini">${Math.round(stats.progress)}%</div>
-          </div>
-          <div class="progressBar"><div style="width:${stats.progress}%"></div></div>
-        </div>
-        <div class="bookQuickActions">
-          <button class="btn small" onclick="window.__app.openBook('${book.id}')">Abrir</button>
-          <button class="btn small secondary" onclick="window.__app.logForBook('${book.id}')">+ Registrar</button>
-        </div>
-      </div>
-    `;
-  }
+  function renderNotesList(bookId) {
+    const book = getBook(bookId);
+    if (!book) return;
+    const notesList = $("#notesList");
+    const noNotes = $("#noNotes");
+    const rawNotes = book.notes || [];
+    noNotes.classList.toggle("hidden", rawNotes.length !== 0);
 
+    const mode = getNoteSort(bookId);
+    const notes = sortedNotes(rawNotes, mode);
 
-  function renderBooks(){
-    const query = booksSearchQuery.trim().toLowerCase();
-    const books = data.books.filter(b => {
-      if(currentFilter === "reading" && b.status === "done") return false;
-      if(currentFilter === "done" && b.status !== "done") return false;
-      if(query){
-        const haystack = `${b.title || ""} ${b.author || ""}`.toLowerCase();
-        if(!haystack.includes(query)) return false;
+    const sortRow = $("#noteSortRow");
+    if (sortRow) {
+      sortRow.querySelectorAll(".noteSortBtn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.nsort === mode);
+      });
+    }
+
+    notesList.innerHTML = notes.map(n => `
+      <div class="noteItem">
+        <div class="mini" style="margin-bottom:8px">${n.createdAt ? fmtDate(String(n.createdAt).slice(0, 10)) : "Sin fecha"}</div>
+        <input class="noteTitleInput" data-note-title="${n.id}" value="${escapeHTML(n.title || "")}" placeholder="Título del apunte" style="margin-bottom:8px" />
+        <textarea class="noteEditor" data-note-id="${n.id}" placeholder="Escribí aquí el resumen, opinión o idea principal...">${escapeHTML(n.text || "")}</textarea>
+        <div class="inlineActions" style="margin-top:8px">
+          <button class="btn small secondary" data-save-note="${n.id}">Guardar</button>
+          <button class="btn small danger" data-delete-note="${n.id}">Eliminar</button>
+        </div>
+      </div>`).join("");
+
+    $$("[data-save-note]", notesList).forEach(btn => btn.addEventListener("click", () => {
+      const nid = btn.dataset.saveNote;
+      const ta = $(`[data-note-id="${nid}"]`, notesList);
+      const ti = $(`[data-note-title="${nid}"]`, notesList);
+      const note = book.notes.find(n => n.id === nid);
+      if (note) {
+        note.title = ti.value.trim() || "Apunte sin título";
+        note.text = ta.value.trim();
+        note.updatedAt = new Date().toISOString();
+        saveAndRender(true);
+        showToast("Apunte guardado.");
+        renderNotesList(book.id);
       }
-      return true;
-    });
-    $("#noBooks").style.display = data.books.length ? "none" : "block";
-    $("#booksList").innerHTML = books.map(bookItemHTML).join("") || `<div class="empty">No se encontraron libros con ese filtro.</div>`;
-    $$(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === currentFilter));
-    const search = $("#bookSearchInput");
-    if(search && search.value !== booksSearchQuery) search.value = booksSearchQuery;
+    }));
+    $$("[data-delete-note]", notesList).forEach(btn => btn.addEventListener("click", () => {
+      const nid = btn.dataset.deleteNote;
+      if (confirm("¿Eliminar este apunte?")) {
+        book.notes = book.notes.filter(n => n.id !== nid);
+        saveAndRender(true);
+        showToast("Apunte eliminado.");
+        renderNotesList(book.id);
+      }
+    }));
   }
 
+  function openBook(id) {
+    const book = getBook(id);
+    if (!book) return;
+    selectedBookId = id;
+    data.settings.lastBookId = id;
+    persist(true);
 
-  function bookItemHTML(book){
     const s = calcBookStats(book);
-    return `
-      <div class="bookListItem">
-        <div class="listTop">
-          <div>
-            <h3>${escapeHTML(book.title)}</h3>
-            <div class="bookMeta">${escapeHTML(book.author || "Sin autor")} · Inicio: ${fmtDate(book.startDate)}${book.finishDate ? " · Fin: " + fmtDate(book.finishDate) : ""}</div>
+    const notes = book.notes || [];
+    openModal(`${escapeHTML(book.title)}`, `
+      <div class="grid">
+        <div class="card" style="box-shadow:none">
+          <div class="listTop">
+            <div>
+              <h3 style="margin:0">${escapeHTML(book.title)}</h3>
+              <div class="bookMeta">${escapeHTML(book.author || "Sin autor")}</div>
+            </div>
+            <span class="chip ${book.status === "done" ? "done" : ""}">${book.archived ? "Archivado" : (book.status === "done" ? "Terminado" : "Leyendo")}</span>
           </div>
-          <span class="chip ${book.status === "done" ? "done" : ""}">${book.status === "done" ? "Terminado" : "Leyendo"}</span>
+          <div class="divider"></div>
+          <div class="progressWrap">
+            <div class="row">
+              <div class="mini">${s.totalRead} / ${book.totalPages || 0} páginas</div>
+              <div class="mini">${Math.round(s.progress)}%</div>
+            </div>
+            <div class="progressBar"><div style="width:${s.progress}%"></div></div>
+          </div>
+          <div class="divider"></div>
+          <div class="smallGrid">
+            <div class="metric"><div class="name">Inicio</div><div class="num" style="font-size:16px">${fmtDate(book.startDate)}</div></div>
+            <div class="metric"><div class="name">Fin</div><div class="num" style="font-size:16px">${book.finishDate ? fmtDate(book.finishDate) : "En curso"}</div></div>
+            <div class="metric"><div class="name">Tiempo leyendo</div><div class="num" style="font-size:16px">${s.durationDays} días</div></div>
+            <div class="metric"><div class="name">Promedio diario</div><div class="num" style="font-size:16px">${s.avgPerDay.toFixed(1)} pág</div></div>
+            <div class="metric"><div class="name">Promedio calendario</div><div class="num" style="font-size:16px">${s.avgPerCalendarDay.toFixed(1)} pág</div></div>
+            <div class="metric"><div class="name">Días activos</div><div class="num" style="font-size:16px">${s.readDays}</div></div>
+          </div>
+          <div class="divider"></div>
+          <div class="inlineActions">
+            <button class="btn" id="detailLogBtn">+ Registrar páginas</button>
+            <button class="btn secondary" id="toggleDoneBtn">${book.status === "done" ? "Reabrir libro" : "Marcar terminado"}</button>
+            <button class="btn secondary" id="editBookBtn">Editar</button>
+            <button class="btn secondary" id="archiveBookBtn">${book.archived ? "Desarchivar" : "Archivar"}</button>
+            <button class="btn danger" id="deleteBookBtn">Eliminar</button>
+          </div>
         </div>
-        <div class="progressWrap">
+
+        <div class="card" style="box-shadow:none">
           <div class="row">
-            <div class="mini">${s.totalRead} / ${book.totalPages || 0} páginas</div>
-            <div class="mini">${Math.round(s.progress)}%</div>
+            <div>
+              <div class="sectionTitle">Apuntes</div>
+              <div class="mini">Agregá resúmenes, opiniones o ideas.</div>
+            </div>
+            <button class="btn small" id="addNoteBtn">+</button>
           </div>
-          <div class="progressBar"><div style="width:${s.progress}%"></div></div>
-        </div>
-        <div class="mini">Promedio: ${s.avgPerDay ? s.avgPerDay.toFixed(1) : "0.0"} pág/día · Días leyendo: ${s.readDays} · Duración: ${s.durationDays} días · Apuntes: ${(book.notes || []).length}</div>
-        <div class="bookQuickActions">
-          <button class="btn small" onclick="window.__app.openBook('${book.id}')">Ver detalles</button>
-          <button class="btn small secondary" onclick="window.__app.logForBook('${book.id}')">Registrar páginas</button>
-          <button class="btn small secondary" onclick="window.__app.toggleBookDone('${book.id}')">${book.status === "done" ? "Reabrir" : "Marcar terminado"}</button>
+          <div class="noteSortRow" id="noteSortRow">
+            <span class="mini" style="font-weight:700;align-self:center">Ordenar:</span>
+            <button class="noteSortBtn" data-nsort="date-desc">Más reciente</button>
+            <button class="noteSortBtn" data-nsort="date-asc">Más antiguo</button>
+            <button class="noteSortBtn" data-nsort="alpha">A→Z</button>
+            <button class="noteSortBtn" data-nsort="alpha-desc">Z→A</button>
+          </div>
+          <div class="divider"></div>
+          <div class="list" id="notesList"></div>
+          <div class="empty" id="noNotes" style="display:${notes.length ? "none" : "block"}">Todavía no hay apuntes.</div>
         </div>
       </div>
-    `;
-  }
-
-
-  function renderStats(){
-    const g = calcGlobalStats();
-    const streak = calcStreak();
-    const totalLast7 = lastNDaysPages(7).reduce((a,b) => a + b.value, 0);
-    const totalLast28 = lastNWeeksPages(4).reduce((a,b) => a + b.value, 0);
-    const totalLast14 = dailyTotals(14).reduce((a,b) => a + b.value, 0);
-
-    const cards = [
-      { label: "Páginas totales", value: g.totalPages, meta: "Todas tus lecturas registradas" },
-      { label: "Libros totales", value: g.totalBooks, meta: `${g.completed} terminados · ${g.inProgress} en progreso` },
-      { label: "Días activos", value: g.readDays, meta: "Días distintos con al menos una lectura" },
-      { label: "Promedio diario", value: g.avgDaily.toFixed(1), meta: "Promedio sobre días activos" },
-      { label: "Notas creadas", value: g.notesTotal, meta: `${g.booksWithNotes} libros con apuntes` },
-      { label: "Racha actual", value: streak.current, meta: `Mejor racha: ${streak.best} días` }
-    ];
-    $("#globalStats").innerHTML = cards.map(card => `
-      <div class="metric">
-        <div class="name">${escapeHTML(card.label)}</div>
-        <div class="num">${escapeHTML(card.value)}</div>
-        <div class="meta">${escapeHTML(card.meta)}</div>
-      </div>
-    `).join("");
-
-    renderBarChart(
-      $("#weeklyChart"),
-      lastNDaysPages(7).map((item) => ({
-        label: item.label,
-        short: item.label.slice(0,3),
-        value: item.value
-      }))
-    );
-    renderBarChart(
-      $("#monthlyChart"),
-      lastNWeeksPages(4).map((item) => ({
-        label: item.label,
-        short: item.short,
-        value: item.value
-      }))
-    );
-    renderLineChart($("#dailyLineChart"), dailyTotals(14));
-    renderPieChart($("#booksPieChart"), [
-      { label: "Leyendo", value: data.books.filter(b => b.status !== "done").length },
-      { label: "Terminados", value: data.books.filter(b => b.status === "done").length }
-    ]);
-
-    $("#weekTotalChip").textContent = `${totalLast7} pág.`;
-    $("#monthTotalChip").textContent = `${totalLast28} pág.`;
-    $("#lineTotalChip").textContent = `${totalLast14} pág.`;
-    $("#pieTotalChip").textContent = `${data.books.length} libros`;
-
-    const tips = [];
-    if(streak.current === 0) tips.push("Leé aunque sea 5 minutos para arrancar la racha.");
-    if(g.avgDaily < (data.settings.dailyGoal || 10)) tips.push("Tu promedio está por debajo de la meta: hacé sesiones pequeñas y constantes.");
-    if(data.books.length === 0) tips.push("Creá un libro para ver estadísticas automáticas.");
-    if(data.books.some(b => !b.notes || !b.notes.length)) tips.push("Usá apuntes con título para encontrar ideas rápido.");
-    if(g.topBook && g.topBook.progress > 0) tips.push(`Tu libro más avanzado es "${g.topBook.title}" con ${Math.round(g.topBook.progress)}%.`);
-    if(!tips.length) tips.push("Vas muy bien: seguí registrando lectura todos los días.");
-    $("#tipsList").innerHTML = tips.map(t => `<div class="logItem">${escapeHTML(t)}</div>`).join("");
-  }
-
-  function renderSettings(){
-    $("#dailyGoalInput").value = data.settings.dailyGoal || 10;
-    $("#themeSelect").value = data.settings.theme || "light";
-    $("#reminderSelect").value = data.settings.reminder || "on";
-    $("#noteSortSelectSettings").value = data.settings.noteSort || "created-desc";
-  }
-
-  function escapeHTML(str){
-    return String(str ?? "").replace(/[&<>"']/g, s => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[s]));
-  }
-
-  function addBookFromForm(form){
-    const title = form.querySelector('[name="title"]').value.trim();
-    const author = form.querySelector('[name="author"]').value.trim();
-    const totalPages = Number(form.querySelector('[name="totalPages"]').value);
-    const startDate = form.querySelector('[name="startDate"]').value || todayKey();
-    if(!title || !totalPages || totalPages < 1){
-      showToast("Completá título y páginas total válidas.");
-      return;
-    }
-    const book = {
-      id: uid(),
-      title,
-      author,
-      totalPages,
-      startDate,
-      finishDate: "",
-      status: "reading",
-      notes: []
-    };
-    data.books.unshift(book);
-    save();
-    showToast("Libro agregado.");
-    closeModal();
-    openBook(book.id);
-  }
-
-  function openAddBookModal(){
-    openModal("Agregar libro", `
-      <form class="formGrid" id="addBookForm">
-        <div class="field">
-          <label>Nombre del libro</label>
-          <input class="input" name="title" placeholder="Ej: Atomic Habits" required />
-        </div>
-        <div class="field">
-          <label>Autor</label>
-          <input class="input" name="author" placeholder="Ej: James Clear" />
-        </div>
-        <div class="twoCols">
-          <div class="field">
-            <label>Páginas totales</label>
-            <input class="input" name="totalPages" type="number" min="1" step="1" placeholder="320" required />
-          </div>
-          <div class="field">
-            <label>Fecha de inicio</label>
-            <input class="input" name="startDate" type="date" value="${todayKey()}" />
-          </div>
-        </div>
-        <div class="field">
-          <label>Opcional: nota inicial</label>
-          <textarea class="textarea" name="initialNote" placeholder="Por qué querés leer este libro..."></textarea>
-        </div>
-        <button class="btn" type="submit">Crear libro</button>
-      </form>
     `, () => {
-      $("#addBookForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const form = e.currentTarget;
-        addBookFromForm(form);
-        const note = form.querySelector('[name="initialNote"]').value.trim();
-        if(note){
-          const book = data.books[0];
-          book.notes.push({
-            id: uid(),
-            title: "Nota inicial",
-            text: note,
-            createdAt: new Date().toISOString()
-          });
-          save();
+      $("#detailLogBtn").addEventListener("click", () => { closeModal(); openLogModal(book.id); });
+      $("#toggleDoneBtn").addEventListener("click", () => { toggleBookDone(book.id); closeModal(); openBook(book.id); });
+      $("#editBookBtn").addEventListener("click", () => openEditBookModal(book.id));
+      $("#archiveBookBtn").addEventListener("click", () => { toggleArchiveBook(book.id); closeModal(); openBook(book.id); });
+      $("#deleteBookBtn").addEventListener("click", () => {
+        if (confirm(`¿Eliminar "${book.title}"? También se borrarán sus registros.`)) {
+          data.logs = data.logs.filter(l => l.bookId !== book.id);
+          data.books = data.books.filter(b => b.id !== book.id);
+          if (selectedBookId === book.id) selectedBookId = data.settings.lastBookId || null;
+          saveAndRender(true);
+          showToast("Libro eliminado.");
+          closeModal();
         }
       });
+      $("#addNoteBtn").addEventListener("click", () => openAddNoteModal(book.id));
+      $$("[data-nsort]").forEach(btn => btn.addEventListener("click", () => {
+        setNoteSort(book.id, btn.dataset.nsort);
+        renderNotesList(book.id);
+      }));
+      renderNotesList(book.id);
     });
   }
 
-  function openLogModal(bookId = null){
-    const books = data.books.slice().sort((a,b)=>a.title.localeCompare(b.title, "es"));
-    if(!books.length){
+  function openLogModal(bookId = null) {
+    const books = data.books.slice().sort((a, b) => (a.title || "").localeCompare(b.title || "", "es"));
+    if (!books.length) {
       showToast("Primero creá un libro.");
       openAddBookModal();
       return;
     }
-    const options = books.map(b => `<option value="${b.id}" ${b.id === bookId ? "selected" : ""}>${escapeHTML(b.title)}</option>`).join("");
+    const defaultBookId = bookId || data.settings.lastBookId || books[0].id;
+    const options = books.map(b => `<option value="${b.id}" ${b.id === defaultBookId ? "selected" : ""}>${escapeHTML(b.title)}</option>`).join("");
     openModal("Registrar lectura", `
       <form class="formGrid" id="logForm">
         <div class="field">
@@ -1702,7 +1629,7 @@
         </div>
         <div class="twoCols">
           <div class="field">
-            <label>Páginas leídas hoy</label>
+            <label>Páginas leídas</label>
             <input class="input" name="pages" type="number" min="1" step="1" placeholder="15" required />
           </div>
           <div class="field">
@@ -1717,185 +1644,36 @@
         <button class="btn" type="submit">Guardar lectura</button>
       </form>
     `, () => {
-      $("#logForm").addEventListener("submit", (e) => {
+      const form = $("#logForm");
+      form.querySelector('[name="pages"]').focus();
+      form.addEventListener("submit", e => {
         e.preventDefault();
         const f = e.currentTarget;
-        const bookId = f.querySelector('[name="bookId"]').value;
+        const bId = f.querySelector('[name="bookId"]').value;
         const pages = Number(f.querySelector('[name="pages"]').value);
         const date = f.querySelector('[name="date"]').value || todayKey();
         const note = f.querySelector('[name="note"]').value.trim();
-        const book = getBook(bookId);
-        if(!book || !pages || pages < 1){
+        const book = getBook(bId);
+        if (!book || !pages || pages < 1) {
           showToast("Ingresá una cantidad de páginas válida.");
           return;
         }
-        data.logs.push({ id: uid(), bookId, pages, date, note });
-        if(book.status !== "done" && (pagesByBook(book.id) + pages) >= book.totalPages){
+        data.logs.push({ id: uid(), bookId: bId, pages, date, note });
+        data.settings.lastBookId = bId;
+        if (!book.archived && book.status !== "done" && (pagesByBook(book.id) + pages) >= book.totalPages) {
           book.status = "done";
           book.finishDate = date;
         }
-        save();
+        saveAndRender(true);
         showToast("Lectura guardada.");
         closeModal();
       });
     });
   }
 
-  function openBook(id){
-    const book = getBook(id);
-    if(!book) return;
-    selectedBookId = id;
-    const s = calcBookStats(book);
-    const notes = book.notes || [];
-    const logs = logsByBook(book.id);
-    openModal(`Libro: ${book.title}`, `
-      <div class="grid">
-        <div class="card" style="box-shadow:none">
-          <div class="listTop">
-            <div>
-              <h3 style="margin:0">${escapeHTML(book.title)}</h3>
-              <div class="bookMeta">${escapeHTML(book.author || "Sin autor")}</div>
-            </div>
-            <span class="chip ${book.status === "done" ? "done" : ""}">${book.status === "done" ? "Terminado" : "Leyendo"}</span>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="progressWrap">
-            <div class="row">
-              <div class="mini">${s.totalRead} / ${book.totalPages} páginas</div>
-              <div class="mini">${Math.round(s.progress)}%</div>
-            </div>
-            <div class="progressBar"><div style="width:${s.progress}%"></div></div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="smallGrid">
-            <div class="statLine"><div class="mini">Inicio</div><div style="font-weight:800">${fmtDate(book.startDate)}</div></div>
-            <div class="statLine"><div class="mini">Fin</div><div style="font-weight:800">${book.finishDate ? fmtDate(book.finishDate) : "En curso"}</div></div>
-            <div class="statLine"><div class="mini">Tiempo leyendo</div><div style="font-weight:800">${s.durationDays} días</div></div>
-            <div class="statLine"><div class="mini">Promedio diario</div><div style="font-weight:800">${s.avgPerDay.toFixed(1)} pág</div></div>
-            <div class="statLine"><div class="mini">Promedio calendario</div><div style="font-weight:800">${s.avgPerCalendarDay.toFixed(1)} pág</div></div>
-            <div class="statLine"><div class="mini">Días activos</div><div style="font-weight:800">${s.readDays}</div></div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="inlineActions">
-            <button class="btn" id="detailLogBtn">+ Registrar páginas</button>
-            <button class="btn secondary" id="toggleDoneBtn">${book.status === "done" ? "Reabrir libro" : "Marcar terminado"}</button>
-            <button class="btn secondary" id="editBookBtn">Editar</button>
-            <button class="btn danger" id="deleteBookBtn">Eliminar</button>
-          </div>
-        </div>
-
-        <div class="card" style="box-shadow:none">
-          <div class="row">
-            <div>
-              <div class="sectionTitle">Apuntes</div>
-              <div class="mini">Agregá resúmenes, opiniones o ideas.</div>
-            </div>
-            <div class="inlineActions" style="justify-content:flex-end">
-              <select class="select" id="notesSortSelect" style="min-height:42px; width:auto; padding:0 12px">
-                <option value="created-desc">Más nuevos</option>
-                <option value="created-asc">Más viejos</option>
-                <option value="title-asc">A-Z</option>
-                <option value="title-desc">Z-A</option>
-              </select>
-              <button class="btn small" id="addNoteBtn">+</button>
-            </div>
-          </div>
-          <div class="divider"></div>
-          <div class="list" id="notesList"></div>
-          <div class="empty" id="noNotes" style="display:${notes.length ? "none" : "block"}">Todavía no hay apuntes.</div>
-        </div>
-
-      </div>
-    `, () => {
-      $("#detailLogBtn").addEventListener("click", () => { closeModal(); openLogModal(book.id); });
-      $("#toggleDoneBtn").addEventListener("click", () => { toggleBookDone(book.id); closeModal(); openBook(book.id); });
-      $("#deleteBookBtn").addEventListener("click", () => {
-        if(confirm(`¿Eliminar "${book.title}"? También se borrarán sus registros.`)){
-          data.logs = data.logs.filter(l => l.bookId !== book.id);
-          data.books = data.books.filter(b => b.id !== book.id);
-          save();
-          showToast("Libro eliminado.");
-          closeModal();
-        }
-      });
-      $("#editBookBtn").addEventListener("click", () => openEditBookModal(book.id));
-      $("#addNoteBtn").addEventListener("click", () => openAddNoteModal(book.id));
-      const notesSortSelect = $("#notesSortSelect");
-      if(notesSortSelect){
-        notesSortSelect.value = data.settings.noteSort || "created-desc";
-        notesSortSelect.addEventListener("change", (e) => {
-          data.settings.noteSort = e.target.value;
-          save();
-          renderNotesList(book.id);
-        });
-      }
-      renderNotesList(book.id);
-    });
-  }
-
-
-  function renderNotesList(bookId){
+  function openAddNoteModal(bookId) {
     const book = getBook(bookId);
-    if(!book) return;
-    const notesList = $("#notesList");
-    const noNotes = $("#noNotes");
-    const notes = sortedNotes(book.notes || []);
-    noNotes.style.display = notes.length ? "none" : "block";
-    notesList.innerHTML = notes.map((n) => `
-      <div class="noteItem">
-        <div class="row">
-          <strong>${escapeHTML(n.title || "Sin título")}</strong>
-          <span class="chip muted">${n.createdAt ? fmtDate(String(n.createdAt).slice(0,10)) : "Sin fecha"}</span>
-        </div>
-        <div class="field" style="margin-top:10px">
-          <label>Título</label>
-          <input class="noteTitleInput" data-note-title="${n.id}" value="${escapeHTML(n.title || "")}" placeholder="Título del apunte" />
-        </div>
-        <div class="field" style="margin-top:10px">
-          <label>Contenido</label>
-          <textarea class="noteEditor" data-note-id="${n.id}" placeholder="Escribí aquí el resumen, opinión o idea principal...">${escapeHTML(n.text || "")}</textarea>
-        </div>
-        <div class="inlineActions" style="margin-top:8px">
-          <button class="btn small secondary" data-save-note="${n.id}">Guardar</button>
-          <button class="btn small danger" data-delete-note="${n.id}">Eliminar</button>
-        </div>
-      </div>
-    `).join("");
-
-    $$("[data-save-note]").forEach(btn => btn.addEventListener("click", () => {
-      const nid = btn.dataset.saveNote;
-      const ta = $(`[data-note-id="${nid}"]`);
-      const ti = $(`[data-note-title="${nid}"]`);
-      const note = book.notes.find(n => n.id === nid);
-      if(note){
-        note.title = ti.value.trim() || "Sin título";
-        note.text = ta.value.trim();
-        note.updatedAt = new Date().toISOString();
-        save();
-        showToast("Apunte guardado.");
-        renderNotesList(book.id);
-      }
-    }));
-    $$("[data-delete-note]").forEach(btn => btn.addEventListener("click", () => {
-      const nid = btn.dataset.deleteNote;
-      if(confirm("¿Eliminar este apunte?")){
-        book.notes = book.notes.filter(n => n.id !== nid);
-        save();
-        showToast("Apunte eliminado.");
-        renderNotesList(book.id);
-      }
-    }));
-  }
-
-  function openAddNoteModal(bookId){
-    const book = getBook(bookId);
-    if(!book) return;
+    if (!book) return;
     openModal("Nuevo apunte", `
       <form class="formGrid" id="noteForm">
         <div class="field">
@@ -1909,19 +1687,22 @@
         <button class="btn" type="submit">Agregar apunte</button>
       </form>
     `, () => {
-      $("#noteForm").addEventListener("submit", (e) => {
+      $("#noteForm").addEventListener("submit", e => {
         e.preventDefault();
-        const title = e.currentTarget.querySelector('[name="title"]').value.trim();
-        const text = e.currentTarget.querySelector('[name="text"]').value.trim();
-        if(!text) return;
+        const f = e.currentTarget;
+        const title = f.querySelector('[name="title"]').value.trim();
+        const text = f.querySelector('[name="text"]').value.trim();
+        if (!text) return;
         book.notes = book.notes || [];
         book.notes.push({
           id: uid(),
-          title: title || "Sin título",
+          title: title || "Apunte sin título",
           text,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          important: false
         });
-        save();
+        saveAndRender(true);
         showToast("Apunte agregado.");
         closeModal();
         openBook(bookId);
@@ -1929,28 +1710,16 @@
     });
   }
 
-  function openEditBookModal(bookId){
+  function openEditBookModal(bookId) {
     const book = getBook(bookId);
-    if(!book) return;
+    if (!book) return;
     openModal("Editar libro", `
       <form class="formGrid" id="editBookForm">
-        <div class="field">
-          <label>Nombre</label>
-          <input class="input" name="title" value="${escapeHTML(book.title)}" required />
-        </div>
-        <div class="field">
-          <label>Autor</label>
-          <input class="input" name="author" value="${escapeHTML(book.author || "")}" />
-        </div>
+        <div class="field"><label>Nombre</label><input class="input" name="title" value="${escapeHTML(book.title)}" required /></div>
+        <div class="field"><label>Autor</label><input class="input" name="author" value="${escapeHTML(book.author || "")}" /></div>
         <div class="twoCols">
-          <div class="field">
-            <label>Páginas totales</label>
-            <input class="input" name="totalPages" type="number" min="1" value="${book.totalPages || 1}" required />
-          </div>
-          <div class="field">
-            <label>Inicio</label>
-            <input class="input" name="startDate" type="date" value="${book.startDate || todayKey()}" />
-          </div>
+          <div class="field"><label>Páginas totales</label><input class="input" name="totalPages" type="number" min="1" value="${book.totalPages || 1}" required /></div>
+          <div class="field"><label>Inicio</label><input class="input" name="startDate" type="date" value="${book.startDate || todayKey()}" /></div>
         </div>
         <div class="field">
           <label>Estado</label>
@@ -1959,10 +1728,17 @@
             <option value="done" ${book.status === "done" ? "selected" : ""}>Terminado</option>
           </select>
         </div>
+        <div class="field">
+          <label>Archivado</label>
+          <select class="select" name="archived">
+            <option value="no" ${!book.archived ? "selected" : ""}>No</option>
+            <option value="yes" ${book.archived ? "selected" : ""}>Sí</option>
+          </select>
+        </div>
         <button class="btn" type="submit">Guardar cambios</button>
       </form>
     `, () => {
-      $("#editBookForm").addEventListener("submit", (e) => {
+      $("#editBookForm").addEventListener("submit", e => {
         e.preventDefault();
         const f = e.currentTarget;
         book.title = f.querySelector('[name="title"]').value.trim();
@@ -1970,9 +1746,10 @@
         book.totalPages = Number(f.querySelector('[name="totalPages"]').value);
         book.startDate = f.querySelector('[name="startDate"]').value || book.startDate;
         book.status = f.querySelector('[name="status"]').value;
-        if(book.status === "done" && !book.finishDate) book.finishDate = todayKey();
-        if(book.status !== "done") book.finishDate = "";
-        save();
+        book.archived = f.querySelector('[name="archived"]').value === "yes";
+        if (book.status === "done" && !book.finishDate) book.finishDate = todayKey();
+        if (book.status !== "done") book.finishDate = "";
+        saveAndRender(true);
         showToast("Libro actualizado.");
         closeModal();
         openBook(book.id);
@@ -1980,22 +1757,126 @@
     });
   }
 
-  function toggleBookDone(bookId){
+  function openAddBookModal() {
+    openModal("Agregar libro", `
+      <form class="formGrid" id="addBookForm">
+        <div class="field"><label>Nombre del libro</label><input class="input" name="title" placeholder="Ej: Atomic Habits" required /></div>
+        <div class="field"><label>Autor</label><input class="input" name="author" placeholder="Ej: James Clear" /></div>
+        <div class="twoCols">
+          <div class="field"><label>Páginas totales</label><input class="input" name="totalPages" type="number" min="1" step="1" placeholder="320" required /></div>
+          <div class="field"><label>Fecha de inicio</label><input class="input" name="startDate" type="date" value="${todayKey()}" /></div>
+        </div>
+        <div class="field"><label>Opcional: nota inicial</label><textarea class="textarea" name="initialNote" placeholder="Por qué querés leer este libro..."></textarea></div>
+        <button class="btn" type="submit">Crear libro</button>
+      </form>
+    `, () => {
+      $("#addBookForm").addEventListener("submit", e => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        const title = form.querySelector('[name="title"]').value.trim();
+        const author = form.querySelector('[name="author"]').value.trim();
+        const totalPages = Number(form.querySelector('[name="totalPages"]').value);
+        const startDate = form.querySelector('[name="startDate"]').value || todayKey();
+        if (!title || !totalPages || totalPages < 1) {
+          showToast("Completá título y páginas totales.");
+          return;
+        }
+        const book = {
+          id: uid(),
+          title,
+          author,
+          totalPages,
+          startDate,
+          finishDate: "",
+          status: "reading",
+          archived: false,
+          notes: []
+        };
+        const note = form.querySelector('[name="initialNote"]').value.trim();
+        if (note) {
+          book.notes.push({
+            id: uid(),
+            title: "Nota inicial",
+            text: note,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            important: false
+          });
+        }
+        data.books.unshift(book);
+        data.settings.lastBookId = book.id;
+        saveAndRender(true);
+        showToast("Libro agregado.");
+        closeModal();
+        openBook(book.id);
+      });
+    });
+  }
+
+  function toggleBookDone(bookId) {
     const book = getBook(bookId);
-    if(!book) return;
-    if(book.status === "done"){
-      book.status = "reading";
-      book.finishDate = "";
-    } else {
-      book.status = "done";
-      book.finishDate = todayKey();
-    }
-    save();
+    if (!book) return;
+    book.status = book.status === "done" ? "reading" : "done";
+    if (book.status === "done") book.finishDate = todayKey();
+    else book.finishDate = "";
+    saveAndRender(true);
     showToast(book.status === "done" ? "Marcado como terminado." : "Reabierto.");
   }
 
-  function exportData(){
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
+  function toggleArchiveBook(bookId) {
+    const book = getBook(bookId);
+    if (!book) return;
+    book.archived = !book.archived;
+    if (book.archived) {
+      book.status = "reading";
+      if (!book.finishDate) book.finishDate = "";
+    }
+    saveAndRender(true);
+    showToast(book.archived ? "Libro archivado." : "Libro desarchivado.");
+  }
+
+  function editLogModal(logId) {
+    const log = data.logs.find(l => l.id === logId);
+    if (!log) return;
+    const books = data.books.slice().sort((a, b) => (a.title || "").localeCompare(b.title || "", "es"));
+    const options = books.map(b => `<option value="${b.id}" ${b.id === log.bookId ? "selected" : ""}>${escapeHTML(b.title)}</option>`).join("");
+    openModal("Editar registro", `
+      <form class="formGrid" id="editLogForm">
+        <div class="field"><label>Libro</label><select class="select" name="bookId">${options}</select></div>
+        <div class="twoCols">
+          <div class="field"><label>Páginas leídas</label><input class="input" name="pages" type="number" min="1" step="1" value="${Number(log.pages || 1)}" required /></div>
+          <div class="field"><label>Fecha</label><input class="input" name="date" type="date" value="${log.date || todayKey()}" /></div>
+        </div>
+        <div class="field"><label>Nota</label><input class="input" name="note" value="${escapeHTML(log.note || "")}" /></div>
+        <button class="btn" type="submit">Guardar cambios</button>
+      </form>
+    `, () => {
+      $("#editLogForm").addEventListener("submit", e => {
+        e.preventDefault();
+        const f = e.currentTarget;
+        log.bookId = f.querySelector('[name="bookId"]').value;
+        log.pages = Number(f.querySelector('[name="pages"]').value);
+        log.date = f.querySelector('[name="date"]').value || todayKey();
+        log.note = f.querySelector('[name="note"]').value.trim();
+        saveAndRender(true);
+        showToast("Registro actualizado.");
+        closeModal();
+      });
+    });
+  }
+
+  function deleteLog(logId) {
+    const idx = data.logs.findIndex(l => l.id === logId);
+    if (idx === -1) return;
+    if (confirm("¿Borrar este registro?")) {
+      data.logs.splice(idx, 1);
+      saveAndRender(true);
+      showToast("Registro borrado.");
+    }
+  }
+
+  function exportData() {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -2004,116 +1885,165 @@
     URL.revokeObjectURL(url);
   }
 
-  function importData(file){
+  function importData(file) {
     const reader = new FileReader();
     reader.onload = () => {
-      try{
+      try {
         const parsed = JSON.parse(reader.result);
-        if(!parsed || typeof parsed !== "object") throw new Error("Formato inválido");
-        data = {
+        if (!parsed || typeof parsed !== "object") throw new Error("Formato inválido");
+        const next = {
           settings: { ...defaultData().settings, ...(parsed.settings || {}) },
           books: Array.isArray(parsed.books) ? parsed.books : [],
           logs: Array.isArray(parsed.logs) ? parsed.logs : []
         };
-        save();
-        setTheme(data.settings.theme || "light");
+        data = next;
+        data.settings.dailyGoal = clamp(Number(data.settings.dailyGoal || 10), 1, 9999);
+        if (!["light", "dark"].includes(data.settings.theme)) data.settings.theme = "light";
+        if (!["on", "off"].includes(data.settings.reminder)) data.settings.reminder = "on";
+        selectedBookId = data.settings.lastBookId || null;
+        currentFilter = data.settings.bookFilter || "all";
+        bookSortMode = data.settings.bookSort || "recent";
+        saveAndRender(true);
         showToast("Datos importados.");
         closeModal();
-      }catch(err){
+      } catch {
         alert("El archivo no es válido.");
       }
     };
     reader.readAsText(file);
   }
 
-  function resetData(){
-    if(confirm("¿Seguro que querés borrar todos los datos? Esta acción no se puede deshacer.")){
+  function resetData() {
+    if (confirm("¿Seguro que querés borrar todos los datos? Esta acción no se puede deshacer.")) {
       data = defaultData();
-      save();
-      setTheme(data.settings.theme);
+      selectedBookId = null;
+      currentFilter = "all";
+      bookSortMode = "recent";
+      noteSortState = {};
+      saveAndRender(true);
       showToast("Datos borrados.");
     }
   }
 
-  function openReadTodayQuick(){
-    openLogModal(selectedBookId);
+  function openQuickAddLog(bookId) {
+    openLogModal(bookId);
   }
 
-  function bindEvents(){
+  function bindEvents() {
     $$(".navBtn").forEach(btn => btn.addEventListener("click", () => {
       $$(".navBtn").forEach(b => b.classList.toggle("active", b === btn));
       $$(".section").forEach(sec => sec.classList.remove("active"));
       $("#" + btn.dataset.section).classList.add("active");
     }));
+
     $$(".tab").forEach(btn => btn.addEventListener("click", () => {
       currentFilter = btn.dataset.filter;
+      data.settings.bookFilter = currentFilter;
+      persist(true);
       renderBooks();
     }));
-    $("#bookSearchInput").addEventListener("input", (e) => {
+
+    $("#bookSearchInput").addEventListener("input", e => {
       booksSearchQuery = e.target.value || "";
       renderBooks();
     });
+
+    $$(".sortBtn").forEach(btn => btn.addEventListener("click", () => {
+      bookSortMode = btn.dataset.sort;
+      data.settings.bookSort = bookSortMode;
+      persist(true);
+      renderBooks();
+    }));
+
+    document.addEventListener("click", e => {
+      const cta = e.target.closest(".chartTypeBtn");
+      if (cta) {
+        chartTypes[cta.dataset.chart] = cta.dataset.type;
+        renderStats();
+        return;
+      }
+
+      const action = e.target.closest("[data-action]");
+      if (!action) return;
+      const type = action.dataset.action;
+      const bookId = action.dataset.bookId;
+      const logId = action.dataset.logId;
+
+      if (type === "open-book") openBook(bookId);
+      if (type === "log-book") openQuickAddLog(bookId);
+      if (type === "toggle-done") { toggleBookDone(bookId); renderAll(); }
+      if (type === "toggle-archive") { toggleArchiveBook(bookId); renderAll(); }
+      if (type === "edit-log") editLogModal(logId);
+      if (type === "delete-log") deleteLog(logId);
+    });
+
     $("#addBookBtn").addEventListener("click", openAddBookModal);
     $("#addBookShortcut").addEventListener("click", openAddBookModal);
-    $("#quickLogBtn").addEventListener("click", openReadTodayQuick);
+    $("#quickLogBtn").addEventListener("click", () => openLogModal(selectedBookId));
     $("#goBooksBtn").addEventListener("click", () => {
-      $$(".navBtn").find(b => b.dataset.section === "booksSection").click();
+      const btn = $(`.navBtn[data-section="booksSection"]`);
+      if (btn) btn.click();
     });
     $("#closeModal").addEventListener("click", closeModal);
-    $("#modalBack").addEventListener("click", (e) => { if(e.target === $("#modalBack")) closeModal(); });
+    $("#modalBack").addEventListener("click", e => { if (e.target === $("#modalBack")) closeModal(); });
     $("#themeBtn").addEventListener("click", () => setTheme(data.settings.theme === "dark" ? "light" : "dark"));
-    $("#themeSelect").addEventListener("change", (e) => setTheme(e.target.value));
+    $("#themeSelect").addEventListener("change", e => setTheme(e.target.value));
     $("#saveSettingsBtn").addEventListener("click", () => {
       data.settings.dailyGoal = clamp(Number($("#dailyGoalInput").value || 10), 1, 9999);
       data.settings.theme = $("#themeSelect").value;
       data.settings.reminder = $("#reminderSelect").value;
-      data.settings.noteSort = $("#noteSortSelectSettings").value || "created-desc";
-      save();
+      saveAndRender(true);
       showToast("Configuración guardada.");
     });
     $("#editGoalBtn").addEventListener("click", () => {
       const goal = prompt("Meta diaria de páginas:", String(data.settings.dailyGoal || 10));
-      if(goal === null) return;
-      const num = clamp(Number(goal || 10), 1, 9999);
-      data.settings.dailyGoal = num;
-      save();
+      if (goal === null) return;
+      data.settings.dailyGoal = clamp(Number(goal || 10), 1, 9999);
+      saveAndRender(true);
       showToast("Meta actualizada.");
     });
     $("#exportBtn").addEventListener("click", exportData);
     $("#exportBtn2").addEventListener("click", exportData);
     $("#importBtn").addEventListener("click", () => $("#importFile").click());
-    $("#importFile").addEventListener("change", (e) => {
-      if(e.target.files && e.target.files[0]) importData(e.target.files[0]);
+    $("#importFile").addEventListener("change", e => {
+      if (e.target.files && e.target.files[0]) importData(e.target.files[0]);
       e.target.value = "";
     });
     $("#resetDataBtn").addEventListener("click", resetData);
 
     window.__app = {
       openBook,
-      logForBook: (bookId) => openLogModal(bookId),
+      logForBook: (id) => openLogModal(id),
       toggleBookDone,
-      openAddBookModal
+      openAddBookModal,
+      openQuickAddLog,
+      openAddNoteModal
     };
   }
 
-  function firstRender(){
+  function init() {
     data.settings.dailyGoal = Number(data.settings.dailyGoal || 10);
-    data.settings.theme = data.settings.theme || "light";
-    data.settings.reminder = data.settings.reminder || "on";
-    data.settings.noteSort = data.settings.noteSort || "created-desc";
+    if (!["light", "dark"].includes(data.settings.theme)) data.settings.theme = "light";
+    if (!["on", "off"].includes(data.settings.reminder)) data.settings.reminder = "on";
+    currentFilter = data.settings.bookFilter || "all";
+    bookSortMode = data.settings.bookSort || "recent";
     setTheme(data.settings.theme);
     bindEvents();
     renderAll();
-    if(data.settings.reminder === "on"){
-      const pages = todayPages();
-      if(pages === 0){
-        $("#subtitle").textContent = "Todavía no registraste lectura hoy. Podés hacerlo en segundos.";
-      }
+
+    if (data.settings.reminder === "on" && todayPages() === 0) {
+      $("#subtitle").textContent = "Todavía no registraste lectura hoy. Podés hacerlo en segundos.";
+    }
+
+    // Fallback if user has a last book and no logs today: preselect it for quick use.
+    if (data.settings.lastBookId && getBook(data.settings.lastBookId)) {
+      selectedBookId = data.settings.lastBookId;
     }
   }
 
-  firstRender();
+  init();
 })();
 </script>
+
 
 </body></html>
